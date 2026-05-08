@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light theme colours -->
+    <color name="colorBackground">#F2F2F7</color>
+    <color name="colorBtnNumber">#FFFFFF</color>
+    <color name="colorBtnSpecial">#A5A5A5</color>
+    <color name="colorBtnOperator">#FF9F0A</color>
+    <color name="colorTextPrimary">#1C1C1E</color>
+    <color name="colorTextSecondary">#8E8E93</color>
+    <color name="colorTextOnNumber">#1C1C1E</color>
+    <color name="colorTextOnSpecial">#1C1C1E</color>
+    <color name="colorTextOnOperator">#FFFFFF</color>
+    <color name="colorGhost">#00000000</color>
+</resources>
