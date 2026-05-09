@@ -80,16 +80,35 @@
 
             </LinearLayout>
 
-            <!-- Theme name -->
-            <TextView
-                android:id="@+id/tvThemeName"
+            <!-- Theme name + optional icon row -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorTextPrimary"
-                android:gravity="center" />
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <!-- Theme icon: shown when a theme has an associated drawable (e.g. Glass Ice snowflake).
+                     Hidden when no iconRes is available. -->
+                <ImageView
+                    android:id="@+id/ivThemeIcon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="4dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/tvThemeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextPrimary"
+                    android:gravity="center" />
+
+            </LinearLayout>
 
             <!-- Free / Premium badge -->
             <TextView

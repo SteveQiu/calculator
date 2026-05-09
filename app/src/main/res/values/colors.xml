@@ -92,6 +92,23 @@
     <color name="panda_display_bg">#F5F5F5</color>
 
     <!-- ═══════════════════════════════════════════════════
+         GLASS ICE THEME  (premium, translucent ice blues)
+         ═══════════════════════════════════════════════════ -->
+    <color name="glass_ice_background">#E8F4FD</color>
+    <color name="glass_ice_display_bg">#F0F8FF</color>
+    <color name="glass_ice_btn_number">#FFFFFF</color>
+    <color name="glass_ice_btn_special">#D0EAF8</color>
+    <color name="glass_ice_btn_operator">#B3D9F5</color>
+    <color name="glass_ice_text_primary">#1A3A5C</color>
+    <color name="glass_ice_text_secondary">#4A7A9B</color>
+    <color name="glass_ice_text_on_number">#1A3A5C</color>
+    <color name="glass_ice_text_on_special">#1A3A5C</color>
+    <color name="glass_ice_text_on_operator">#0D2137</color>
+    <color name="glass_ice_ghost">#00000000</color>
+    <!-- Accent: used by the snowflake icon drawable and future highlight elements -->
+    <color name="glass_ice_accent">#5BB8D4</color>
+
+    <!-- ═══════════════════════════════════════════════════
          BACKWARD-COMPAT ALIASES  → Classic colors
          (keeps existing layout/style references working)
          ═══════════════════════════════════════════════════ -->

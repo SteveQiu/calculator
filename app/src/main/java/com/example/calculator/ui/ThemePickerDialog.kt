@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calculator.R
 import com.example.calculator.di.AppModule
+import com.example.calculator.model.Theme
 import com.example.calculator.model.ThemeId
-import com.example.calculator.model.toColors
+import com.example.calculator.model.ThemeRegistry
 import com.example.calculator.viewmodel.ThemeViewModel
 import com.example.calculator.viewmodel.ThemeViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -82,7 +83,7 @@ class ThemePickerDialog : BottomSheetDialogFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             themeViewModel.unlockedThemes.collect { unlocked ->
                 recyclerView.adapter = ThemeCardAdapter(
-                    themes         = ThemeId.entries,
+                    themes         = ThemeRegistry.all,
                     unlockedThemes = unlocked,
                     activeTheme    = themeViewModel.activeTheme.value
                 )
@@ -101,7 +102,7 @@ class ThemePickerDialog : BottomSheetDialogFragment() {
     // Inner class so it can reference `listener` and `dismiss()` directly.
 
     inner class ThemeCardAdapter(
-        private val themes: List<ThemeId>,
+        private val themes: List<Theme>,
         private var unlockedThemes: Set<ThemeId>,
         private var activeTheme: ThemeId
     ) : RecyclerView.Adapter<ThemeCardAdapter.VH>() {
@@ -118,6 +119,7 @@ class ThemePickerDialog : BottomSheetDialogFragment() {
             val dotOperator: View      = itemView.findViewById(R.id.dotOperator)
             val btnWatchAd: View       = itemView.findViewById(R.id.btnCardWatchAd)
             val btnBuy: View           = itemView.findViewById(R.id.btnCardBuy)
+            val ivThemeIcon: android.widget.ImageView = itemView.findViewById(R.id.ivThemeIcon)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -127,18 +129,29 @@ class ThemePickerDialog : BottomSheetDialogFragment() {
         }
 
         override fun onBindViewHolder(holder: VH, position: Int) {
-            val themeId    = themes[position]
-            val isUnlocked = themeId in unlockedThemes || !themeId.isPremium
+            val theme      = themes[position]
+            val themeId    = theme.id
+            val isUnlocked = themeId in unlockedThemes || !theme.isPremium
             val isActive   = themeId == activeTheme
-            val colors     = themeId.toColors(holder.itemView.context)
+            val colors     = theme.colors(holder.itemView.context)
 
-            holder.name.text = themeId.displayName
-            holder.nameOverlay.text = themeId.displayName
+            holder.name.text = theme.displayName
+            holder.nameOverlay.text = theme.displayName
+
+            // Show drawable icon when the Theme has one; hide the view otherwise.
+            val iconRes = theme.iconRes
+            if (iconRes != null) {
+                holder.ivThemeIcon.setImageResource(iconRes)
+                holder.ivThemeIcon.visibility = View.VISIBLE
+            } else {
+                holder.ivThemeIcon.visibility = View.GONE
+            }
+
             holder.badge.text = when {
-                isActive               -> "✓ Active"
-                !themeId.isPremium     -> "Free"
-                isUnlocked             -> "✓ Owned"   // premium + purchased/unlocked
-                else                   -> "Premium"   // premium + locked
+                isActive          -> "✓ Active"
+                !theme.isPremium  -> "Free"
+                isUnlocked        -> "✓ Owned"   // premium + purchased/unlocked
+                else              -> "Premium"   // premium + locked
             }
 
             holder.previewBg.setBackgroundColor(colors.background)
