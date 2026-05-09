@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Calculator">
 
+        <!-- AdMob App ID (test ID — replace with production ID before release) -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -26,12 +31,8 @@
         <activity
             android:name=".ui.ThemePickerActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
-
-        <!-- AdMob App ID (test ID — replace before release) -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511316" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Calculator.ThemePicker" />
 
     </application>
 

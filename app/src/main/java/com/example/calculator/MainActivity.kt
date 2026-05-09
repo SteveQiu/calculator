@@ -1,51 +1,113 @@
 package com.example.calculator
 
+import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import com.example.calculator.databinding.ActivityMainBinding
-import java.math.BigDecimal
-import java.math.MathContext
+import com.example.calculator.di.AppModule
+import com.example.calculator.model.ThemeId
+import com.example.calculator.model.toColors
+import com.example.calculator.ui.ThemePickerActivity
+import com.example.calculator.viewmodel.CalculatorViewModel
+import com.example.calculator.viewmodel.ThemeViewModel
+import com.example.calculator.viewmodel.ThemeViewModelFactory
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    // Calculator state
-    private var displayValue = "0"
-    private var expressionText = ""
-    private var firstOperand: Double? = null
-    private var pendingOperator = ""
-    private var isNewInput = true
-    private var lastWasEquals = false
+    private val calcViewModel: CalculatorViewModel by viewModels()
+
+    private val themeViewModel: ThemeViewModel by viewModels {
+        ThemeViewModelFactory(
+            AppModule.provideThemeRepository(this),
+            AppModule.provideBillingRepository(this),
+            AppModule.provideAdRepository(this)
+        )
+    }
+
+    private val themePickerLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            recreate()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        savedInstanceState?.let { state ->
-            displayValue = state.getString("displayValue", "0")!!
-            expressionText = state.getString("expressionText", "")!!
-            firstOperand = if (state.containsKey("firstOperand")) state.getDouble("firstOperand") else null
-            pendingOperator = state.getString("pendingOperator", "")!!
-            isNewInput = state.getBoolean("isNewInput", true)
-            lastWasEquals = state.getBoolean("lastWasEquals", false)
+        savedInstanceState?.let {
+            calcViewModel.restoreState(
+                display   = it.getString("displayValue", "0")!!,
+                expr      = it.getString("expressionText", "")!!,
+                first     = if (it.containsKey("firstOperand")) it.getDouble("firstOperand") else null,
+                op        = it.getString("pendingOperator", "")!!,
+                newInput  = it.getBoolean("isNewInput", true),
+                wasEquals = it.getBoolean("lastWasEquals", false)
+            )
         }
 
-        updateDisplay()
         setupButtons()
-        updateThemeButton()
+        updateDisplay()
+        observeTheme()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("displayValue", displayValue)
-        outState.putString("expressionText", expressionText)
-        firstOperand?.let { outState.putDouble("firstOperand", it) }
-        outState.putString("pendingOperator", pendingOperator)
-        outState.putBoolean("isNewInput", isNewInput)
-        outState.putBoolean("lastWasEquals", lastWasEquals)
+        outState.putString("displayValue", calcViewModel.displayValue)
+        outState.putString("expressionText", calcViewModel.expressionText)
+        // Operator state lives in ViewModel; survives config changes automatically.
+        // On process death the display resets to "0" — acceptable for a calculator.
+    }
+
+    private fun observeTheme() {
+        lifecycleScope.launch {
+            themeViewModel.activeTheme.collect { themeId ->
+                applyThemeColors(themeId)
+            }
+        }
+    }
+
+    private fun applyThemeColors(themeId: ThemeId) {
+        val colors = themeId.toColors(this)
+
+        binding.root.setBackgroundColor(colors.background)
+        binding.tvDisplay.setTextColor(colors.textPrimary)
+        binding.tvExpression.setTextColor(colors.textSecondary)
+
+        val numberTint   = ColorStateList.valueOf(colors.btnNumber)
+        val specialTint  = ColorStateList.valueOf(colors.btnSpecial)
+        val operatorTint = ColorStateList.valueOf(colors.btnOperator)
+
+        listOf(
+            binding.btn0, binding.btn1, binding.btn2, binding.btn3, binding.btn4,
+            binding.btn5, binding.btn6, binding.btn7, binding.btn8, binding.btn9,
+            binding.btnDot
+        ).forEach { btn ->
+            btn.backgroundTintList = numberTint
+            btn.setTextColor(colors.textOnNumber)
+        }
+
+        listOf(binding.btnClear, binding.btnToggleSign, binding.btnPercent).forEach { btn ->
+            btn.backgroundTintList = specialTint
+            btn.setTextColor(colors.textOnSpecial)
+        }
+
+        listOf(
+            binding.btnDivide, binding.btnMultiply, binding.btnSubtract,
+            binding.btnAdd, binding.btnEquals
+        ).forEach { btn ->
+            btn.backgroundTintList = operatorTint
+            btn.setTextColor(colors.textOnOperator)
+        }
     }
 
     private fun setupButtons() {
@@ -54,186 +116,30 @@ class MainActivity : AppCompatActivity() {
             binding.btn3 to "3", binding.btn4 to "4", binding.btn5 to "5",
             binding.btn6 to "6", binding.btn7 to "7", binding.btn8 to "8",
             binding.btn9 to "9"
-        ).forEach { (btn, digit) -> btn.setOnClickListener { onDigit(digit) } }
-
-        binding.btnDot.setOnClickListener { onDot() }
-        binding.btnClear.setOnClickListener { onClear() }
-        binding.btnDelete.setOnClickListener { onDelete() }
-        binding.btnToggleSign.setOnClickListener { onToggleSign() }
-        binding.btnPercent.setOnClickListener { onPercent() }
-        binding.btnAdd.setOnClickListener { onOperator("+") }
-        binding.btnSubtract.setOnClickListener { onOperator("−") }
-        binding.btnMultiply.setOnClickListener { onOperator("×") }
-        binding.btnDivide.setOnClickListener { onOperator("÷") }
-        binding.btnEquals.setOnClickListener { onEquals() }
-        binding.btnTheme.setOnClickListener { toggleTheme() }
-    }
-
-    // ── Input handlers ──────────────────────────────────────────────────────
-
-    private fun onDigit(digit: String) {
-        if (isNewInput) {
-            displayValue = digit
-            isNewInput = false
-        } else {
-            if (displayValue == "0") displayValue = digit
-            else if (displayValue.length < 15) displayValue += digit
+        ).forEach { (btn, digit) ->
+            btn.setOnClickListener { calcViewModel.onDigit(digit); updateDisplay() }
         }
-        lastWasEquals = false
-        updateDisplay()
-    }
 
-    private fun onDot() {
-        if (isNewInput) {
-            displayValue = "0."
-            isNewInput = false
-        } else if (!displayValue.contains(".")) {
-            displayValue += "."
+        binding.btnDot.setOnClickListener      { calcViewModel.onDot();        updateDisplay() }
+        binding.btnClear.setOnClickListener    { calcViewModel.onClear();       updateDisplay() }
+        binding.btnDelete.setOnClickListener   { calcViewModel.onDelete();      updateDisplay() }
+        binding.btnToggleSign.setOnClickListener { calcViewModel.onToggleSign(); updateDisplay() }
+        binding.btnPercent.setOnClickListener  { calcViewModel.onPercent();     updateDisplay() }
+        binding.btnAdd.setOnClickListener      { calcViewModel.onOperator("+"); updateDisplay() }
+        binding.btnSubtract.setOnClickListener { calcViewModel.onOperator("−"); updateDisplay() }
+        binding.btnMultiply.setOnClickListener { calcViewModel.onOperator("×"); updateDisplay() }
+        binding.btnDivide.setOnClickListener   { calcViewModel.onOperator("÷"); updateDisplay() }
+        binding.btnEquals.setOnClickListener   { calcViewModel.onEquals();      updateDisplay() }
+
+        binding.btnTheme.setOnClickListener {
+            themePickerLauncher.launch(Intent(this, ThemePickerActivity::class.java))
         }
-        lastWasEquals = false
-        updateDisplay()
-    }
-
-    private fun onClear() {
-        val isFullClear = displayValue == "0" && pendingOperator.isEmpty() && firstOperand == null
-        if (isFullClear) {
-            expressionText = ""
-            firstOperand = null
-            pendingOperator = ""
-            lastWasEquals = false
-        }
-        displayValue = "0"
-        isNewInput = pendingOperator.isNotEmpty()
-        updateDisplay()
-    }
-
-    private fun onDelete() {
-        if (lastWasEquals) {
-            onClear()
-            return
-        }
-        // Cancel pending operator if we haven't typed new input yet
-        if (isNewInput && pendingOperator.isNotEmpty()) {
-            pendingOperator = ""
-            firstOperand?.let { displayValue = formatNumber(it) }
-            firstOperand = null
-            expressionText = ""
-            isNewInput = false
-            updateDisplay()
-            return
-        }
-        if (!isNewInput) {
-            displayValue = when {
-                displayValue.length <= 1 -> "0"
-                displayValue == "-0" -> "0"
-                else -> displayValue.dropLast(1).let { if (it == "-") "0" else it }
-            }
-            updateDisplay()
-        }
-    }
-
-    private fun onToggleSign() {
-        val value = displayValue.toDoubleOrNull() ?: return
-        if (value == 0.0) return
-        displayValue = formatNumber(-value)
-        isNewInput = false
-        updateDisplay()
-    }
-
-    private fun onPercent() {
-        val value = displayValue.toDoubleOrNull() ?: return
-        val result = if (firstOperand != null && (pendingOperator == "+" || pendingOperator == "−")) {
-            firstOperand!! * (value / 100.0)
-        } else {
-            value / 100.0
-        }
-        displayValue = formatNumber(result)
-        isNewInput = false
-        updateDisplay()
-    }
-
-    private fun onOperator(op: String) {
-        val currentValue = displayValue.toDoubleOrNull() ?: return
-        if (firstOperand != null && !isNewInput) {
-            val result = compute(firstOperand!!, currentValue, pendingOperator)
-            if (result == null) { showError(); return }
-            firstOperand = result
-            displayValue = formatNumber(result)
-        } else {
-            firstOperand = currentValue
-        }
-        pendingOperator = op
-        expressionText = "${formatNumber(firstOperand!!)} $op"
-        isNewInput = true
-        lastWasEquals = false
-        updateDisplay()
-    }
-
-    private fun onEquals() {
-        if (pendingOperator.isEmpty() || firstOperand == null) return
-        val secondOperand = displayValue.toDoubleOrNull() ?: return
-        val result = compute(firstOperand!!, secondOperand, pendingOperator)
-        if (result == null) { showError(); return }
-        expressionText = "${formatNumber(firstOperand!!)} $pendingOperator ${formatNumber(secondOperand)} ="
-        displayValue = formatNumber(result)
-        firstOperand = null
-        pendingOperator = ""
-        isNewInput = true
-        lastWasEquals = true
-        updateDisplay()
-    }
-
-    // ── Helpers ─────────────────────────────────────────────────────────────
-
-    private fun compute(a: Double, b: Double, op: String): Double? = when (op) {
-        "+" -> a + b
-        "−" -> a - b
-        "×" -> a * b
-        "÷" -> if (b != 0.0) a / b else null
-        else -> null
-    }
-
-    private fun formatNumber(value: Double): String {
-        if (value.isInfinite() || value.isNaN()) return "Error"
-        if (value == 0.0) return "0"
-        val formatted = "%.10g".format(value)
-        return when {
-            formatted.contains('e', ignoreCase = true) -> {
-                BigDecimal(value).round(MathContext(10)).toEngineeringString()
-            }
-            formatted.contains('.') -> formatted.trimEnd('0').trimEnd('.')
-            else -> formatted
-        }
-    }
-
-    private fun showError() {
-        displayValue = "Error"
-        expressionText = ""
-        firstOperand = null
-        pendingOperator = ""
-        isNewInput = true
-        updateDisplay()
     }
 
     private fun updateDisplay() {
-        binding.tvDisplay.text = displayValue
-        binding.tvExpression.text = expressionText
-        val isFullClear = displayValue == "0" && pendingOperator.isEmpty() && firstOperand == null
-        binding.btnClear.text = if (isFullClear) "AC" else "C"
-    }
-
-    // ── Theme ────────────────────────────────────────────────────────────────
-
-    private fun toggleTheme() {
-        val isNight = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
-        val newMode = if (isNight) AppCompatDelegate.MODE_NIGHT_NO else AppCompatDelegate.MODE_NIGHT_YES
-        getSharedPreferences("calc_prefs", MODE_PRIVATE).edit()
-            .putBoolean("dark_mode", !isNight).apply()
-        AppCompatDelegate.setDefaultNightMode(newMode)
-    }
-
-    private fun updateThemeButton() {
-        val isNight = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
-        binding.btnTheme.text = if (isNight) "☀" else "🌙"
+        val state = calcViewModel.displayState
+        binding.tvDisplay.text    = state.display
+        binding.tvExpression.text = state.expression
+        binding.btnClear.text     = if (state.showAC) "AC" else "C"
     }
 }

@@ -2,56 +2,123 @@ package com.example.calculator.repository
 
 import android.app.Activity
 import android.content.Context
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.Purchase
-import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.*
 import com.example.calculator.model.ThemeId
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 
-/**
- * Wraps Google Play Billing (BillingClient) for one-time premium theme purchases.
- *
- * SKU convention: one product ID per premium theme, e.g. "theme_midnight", "theme_ocean", "theme_sunset".
- * Product type: INAPP (one-time purchase, not subscription).
- *
- * Flow:
- *   1. BillingClient connects on app start (call [connect]).
- *   2. [launchPurchaseFlow] queries ProductDetails then launches BillingFlowParams.
- *   3. [PurchasesUpdatedListener] receives the result; on OK → [onPurchaseValidated] callback fires.
- *   4. Caller (ThemeViewModel) calls ThemeRepository.unlockTheme() on success.
- *
- * TODO: Implement connect() — BillingClient.newBuilder().setListener(purchasesUpdatedListener).build()
- * TODO: Implement launchPurchaseFlow(activity, themeId) — queryProductDetailsAsync then launchBillingFlow
- * TODO: Implement acknowledgePurchase(purchase) — required for INAPP to avoid automatic refund
- * TODO: Handle BillingResponseCode.ITEM_ALREADY_OWNED — treat as unlock (restore purchases path)
- * TODO: Implement queryAndRestorePurchases() — call on app start to restore existing purchases
- */
-class BillingRepository(
-    private val context: Context,
-    private val themeRepository: ThemeRepository,
-) : PurchasesUpdatedListener {
+class BillingRepository(private val context: Context) : PurchasesUpdatedListener {
 
-    private lateinit var billingClient: BillingClient
-
-    /** Map premium ThemeId to its Play Store product ID. */
-    private val themeToProductId = mapOf(
-        ThemeId.MIDNIGHT to "theme_midnight",
-        ThemeId.OCEAN    to "theme_ocean",
-        ThemeId.SUNSET   to "theme_sunset",
-    )
-
-    fun connect() {
-        // TODO: Build and start BillingClient connection
+    sealed class BillingResult {
+        data class Success(val themeId: ThemeId) : BillingResult()
+        data class Error(val message: String) : BillingResult()
+        object Cancelled : BillingResult()
     }
 
-    fun launchPurchaseFlow(activity: Activity, themeId: ThemeId) {
-        // TODO: queryProductDetailsAsync for themeToProductId[themeId]
-        // TODO: launchBillingFlow with resulting ProductDetails
+    private val _purchaseResults = MutableSharedFlow<BillingResult>(extraBufferCapacity = 1)
+    val purchaseResults: SharedFlow<BillingResult> = _purchaseResults
+
+    private val billingClient: BillingClient = BillingClient.newBuilder(context)
+        .setListener(this)
+        .enablePendingPurchases()
+        .build()
+
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    init {
+        connectBillingClient()
     }
 
-    override fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
-        // TODO: Check billingResult.responseCode == BillingClient.BillingResponseCode.OK
-        // TODO: For each purchase, acknowledgePurchase() then themeRepository.unlockTheme()
+    private fun connectBillingClient() {
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(result: com.android.billingclient.api.BillingResult) {
+                if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                    scope.launch { restorePurchases() }
+                }
+            }
+            override fun onBillingServiceDisconnected() {
+                // Will retry on next purchase attempt
+            }
+        })
+    }
+
+    suspend fun queryProductDetails(themeId: ThemeId): ProductDetails? {
+        val skuId = themeId.skuId ?: return null
+        val params = QueryProductDetailsParams.newBuilder()
+            .setProductList(
+                listOf(
+                    QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(skuId)
+                        .setProductType(BillingClient.ProductType.INAPP)
+                        .build()
+                )
+            )
+            .build()
+        return withContext(Dispatchers.IO) {
+            billingClient.queryProductDetails(params).productDetailsList?.firstOrNull()
+        }
+    }
+
+    fun launchPurchaseFlow(activity: Activity, productDetails: ProductDetails, themeId: ThemeId) {
+        val billingFlowParams = BillingFlowParams.newBuilder()
+            .setProductDetailsParamsList(
+                listOf(
+                    BillingFlowParams.ProductDetailsParams.newBuilder()
+                        .setProductDetails(productDetails)
+                        .build()
+                )
+            )
+            .build()
+        billingClient.launchBillingFlow(activity, billingFlowParams)
+    }
+
+    override fun onPurchasesUpdated(
+        result: com.android.billingclient.api.BillingResult,
+        purchases: List<Purchase>?
+    ) {
+        when (result.responseCode) {
+            BillingClient.BillingResponseCode.OK -> {
+                purchases?.forEach { purchase ->
+                    scope.launch { handlePurchase(purchase) }
+                }
+            }
+            BillingClient.BillingResponseCode.USER_CANCELED -> {
+                _purchaseResults.tryEmit(BillingResult.Cancelled)
+            }
+            else -> {
+                _purchaseResults.tryEmit(BillingResult.Error(result.debugMessage))
+            }
+        }
+    }
+
+    private suspend fun handlePurchase(purchase: Purchase) {
+        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+            if (!purchase.isAcknowledged) {
+                val params = AcknowledgePurchaseParams.newBuilder()
+                    .setPurchaseToken(purchase.purchaseToken)
+                    .build()
+                billingClient.acknowledgePurchase(params)
+            }
+            val themeId = ThemeId.entries.firstOrNull { theme ->
+                theme.skuId != null && purchase.products.contains(theme.skuId)
+            }
+            if (themeId != null) {
+                _purchaseResults.tryEmit(BillingResult.Success(themeId))
+            }
+        }
+    }
+
+    private suspend fun restorePurchases() {
+        val params = QueryPurchasesParams.newBuilder()
+            .setProductType(BillingClient.ProductType.INAPP)
+            .build()
+        val result = billingClient.queryPurchasesAsync(params)
+        result.purchasesList.forEach { handlePurchase(it) }
+    }
+
+    fun destroy() {
+        scope.cancel()
+        billingClient.endConnection()
     }
 }
