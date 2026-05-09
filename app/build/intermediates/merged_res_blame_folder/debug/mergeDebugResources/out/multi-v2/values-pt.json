@@ -4,24 +4,7 @@
             "outputFile": "com.example.calculator.app-mergeDebugResources-49:/values-pt/values-pt.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\qiuyu\\.gradle\\caches\\8.13\\transforms\\8e7a10cfd84c65865401d9b93ea8004e\\transformed\\browser-1.4.0\\res\\values-pt\\values-pt.xml",
-                    "from": {
-                        "startLines": "2,3,4,5",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,170,269,381",
-                        "endColumns": "114,98,111,105",
-                        "endOffsets": "165,264,376,482"
-                    },
-                    "to": {
-                        "startLines": "36,37,38,39",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "3578,3693,3792,3904",
-                        "endColumns": "114,98,111,105",
-                        "endOffsets": "3688,3787,3899,4005"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\qiuyu\\.gradle\\caches\\8.13\\transforms\\06e806dcdb528698d2685ac186287576\\transformed\\appcompat-1.6.1\\res\\values-pt\\values-pt.xml",
+                    "source": "C:\\Users\\qiuyu\\.gradle\\caches\\9.4.1\\transforms\\87c5509f268c0e04a7661e79984033da\\transformed\\appcompat-1.6.1\\res\\values-pt\\values-pt.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\qiuyu\\.gradle\\caches\\8.13\\transforms\\955369e4c0c2c1e5eefeb096424c1cb7\\transformed\\core-1.12.0\\res\\values-pt\\values-pt.xml",
+                    "source": "C:\\Users\\qiuyu\\.gradle\\caches\\9.4.1\\transforms\\42ba6878e9616e38dd97d229a1ad4e11\\transformed\\core-1.12.0\\res\\values-pt\\values-pt.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -52,6 +35,23 @@
                         "startOffsets": "2843,2940,3042,3141,3241,3348,3458,4096",
                         "endColumns": "96,101,98,99,106,109,119,100",
                         "endOffsets": "2935,3037,3136,3236,3343,3453,3573,4192"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\qiuyu\\.gradle\\caches\\9.4.1\\transforms\\8a31c923abe3bb3179085227b375a27b\\transformed\\browser-1.4.0\\res\\values-pt\\values-pt.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,170,269,381",
+                        "endColumns": "114,98,111,105",
+                        "endOffsets": "165,264,376,482"
+                    },
+                    "to": {
+                        "startLines": "36,37,38,39",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "3578,3693,3792,3904",
+                        "endColumns": "114,98,111,105",
+                        "endOffsets": "3688,3787,3899,4005"
                     }
                 }
             ]

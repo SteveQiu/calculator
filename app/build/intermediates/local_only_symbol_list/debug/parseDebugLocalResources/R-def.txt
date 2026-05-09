@@ -137,6 +137,7 @@ id tvDisplay
 id tvExpression
 id tvRestorePurchase
 id tvThemeName
+id tvThemeNameOverlay
 layout activity_main
 layout activity_theme_picker
 layout dialog_theme_picker

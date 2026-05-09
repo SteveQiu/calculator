@@ -1,90 +1,86 @@
 [
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\drawable_bg_theme_preview_card.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\drawable\\bg_theme_preview_card.xml"
+        "merged": "com.example.calculator.app-debug-51:/layout_dialog_theme_unlock.xml.flat",
+        "source": "com.example.calculator.app-main-53:/layout/dialog_theme_unlock.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-xxhdpi\\ic_launcher.png"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\layout_dialog_theme_unlock.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\dialog_theme_unlock.xml"
+        "merged": "com.example.calculator.app-debug-51:/layout_dialog_theme_picker.xml.flat",
+        "source": "com.example.calculator.app-main-53:/layout/dialog_theme_picker.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\drawable_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\drawable\\ic_launcher_foreground.xml"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-xhdpi\\ic_launcher.png"
+        "merged": "com.example.calculator.app-debug-51:/layout_activity_theme_picker.xml.flat",
+        "source": "com.example.calculator.app-main-53:/layout/activity_theme_picker.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\drawable_bg_theme_preview_dialog.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\drawable\\bg_theme_preview_dialog.xml"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-hdpi/ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\drawable_shape_palette_dot.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\drawable\\shape_palette_dot.xml"
+        "merged": "com.example.calculator.app-debug-51:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.calculator.app-main-53:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\layout_dialog_theme_picker.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\dialog_theme_picker.xml"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "com.example.calculator.app-debug-51:/drawable_bg_theme_preview_card.xml.flat",
+        "source": "com.example.calculator.app-main-53:/drawable/bg_theme_preview_card.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-xxxhdpi\\ic_launcher_round.png"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-xhdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-xhdpi\\ic_launcher_round.png"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-xxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\layout_activity_theme_picker.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\activity_theme_picker.xml"
+        "merged": "com.example.calculator.app-debug-51:/layout_item_theme_card.xml.flat",
+        "source": "com.example.calculator.app-main-53:/layout/item_theme_card.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-mdpi\\ic_launcher_round.png"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-hdpi/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-mdpi/ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\layout_item_theme_card.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\item_theme_card.xml"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-mdpi/ic_launcher.png"
     },
     {
         "merged": "com.example.calculator.app-debug-51:/layout_activity_main.xml.flat",
         "source": "com.example.calculator.app-main-53:/layout/activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-xxhdpi\\ic_launcher_round.png"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-xhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\activity_main.xml"
+        "merged": "com.example.calculator.app-debug-51:/drawable_bg_theme_preview_dialog.xml.flat",
+        "source": "com.example.calculator.app-main-53:/drawable/bg_theme_preview_dialog.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-hdpi\\ic_launcher.png"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-xxxhdpi\\ic_launcher.png"
+        "merged": "com.example.calculator.app-debug-51:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.calculator.app-main-53:/mipmap-xxxhdpi/ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-mdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-mdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-debug-51:\\mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\mipmap-hdpi\\ic_launcher_round.png"
+        "merged": "com.example.calculator.app-debug-51:/drawable_shape_palette_dot.xml.flat",
+        "source": "com.example.calculator.app-main-53:/drawable/shape_palette_dot.xml"
     }
 ]

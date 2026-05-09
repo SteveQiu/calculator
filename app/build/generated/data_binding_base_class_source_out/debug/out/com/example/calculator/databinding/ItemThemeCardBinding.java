@@ -55,11 +55,15 @@ public final class ItemThemeCardBinding implements ViewBinding {
   @NonNull
   public final TextView tvThemeName;
 
+  @NonNull
+  public final TextView tvThemeNameOverlay;
+
   private ItemThemeCardBinding(@NonNull MaterialCardView rootView,
       @NonNull MaterialButton btnCardBuy, @NonNull MaterialButton btnCardWatchAd,
       @NonNull MaterialCardView cardRoot, @NonNull View dotNumber, @NonNull View dotOperator,
       @NonNull View dotSpecial, @NonNull LinearLayout lockOverlay, @NonNull LinearLayout paletteRow,
-      @NonNull FrameLayout previewBg, @NonNull TextView tvBadge, @NonNull TextView tvThemeName) {
+      @NonNull FrameLayout previewBg, @NonNull TextView tvBadge, @NonNull TextView tvThemeName,
+      @NonNull TextView tvThemeNameOverlay) {
     this.rootView = rootView;
     this.btnCardBuy = btnCardBuy;
     this.btnCardWatchAd = btnCardWatchAd;
@@ -72,6 +76,7 @@ public final class ItemThemeCardBinding implements ViewBinding {
     this.previewBg = previewBg;
     this.tvBadge = tvBadge;
     this.tvThemeName = tvThemeName;
+    this.tvThemeNameOverlay = tvThemeNameOverlay;
   }
 
   @Override
@@ -163,9 +168,15 @@ public final class ItemThemeCardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvThemeNameOverlay;
+      TextView tvThemeNameOverlay = ViewBindings.findChildViewById(rootView, id);
+      if (tvThemeNameOverlay == null) {
+        break missingId;
+      }
+
       return new ItemThemeCardBinding((MaterialCardView) rootView, btnCardBuy, btnCardWatchAd,
           cardRoot, dotNumber, dotOperator, dotSpecial, lockOverlay, paletteRow, previewBg, tvBadge,
-          tvThemeName);
+          tvThemeName, tvThemeNameOverlay);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

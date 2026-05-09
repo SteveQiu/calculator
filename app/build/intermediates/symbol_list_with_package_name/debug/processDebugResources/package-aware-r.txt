@@ -3755,6 +3755,7 @@ id tvDisplay
 id tvExpression
 id tvRestorePurchase
 id tvThemeName
+id tvThemeNameOverlay
 id unchecked
 id uniform
 id unlabeled
