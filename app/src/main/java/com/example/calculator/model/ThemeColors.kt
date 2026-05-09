@@ -84,4 +84,15 @@ fun ThemeId.toColors(context: Context): ThemeColors = when (this) {
         textOnSpecial  = ContextCompat.getColor(context, R.color.panda_text_on_special),
         textOnOperator = ContextCompat.getColor(context, R.color.panda_text_on_operator)
     )
+    ThemeId.GLASS_ICE -> ThemeColors(
+        background     = ContextCompat.getColor(context, R.color.glass_ice_background),
+        btnNumber      = ContextCompat.getColor(context, R.color.glass_ice_btn_number),
+        btnSpecial     = ContextCompat.getColor(context, R.color.glass_ice_btn_special),
+        btnOperator    = ContextCompat.getColor(context, R.color.glass_ice_btn_operator),
+        textPrimary    = ContextCompat.getColor(context, R.color.glass_ice_text_primary),
+        textSecondary  = ContextCompat.getColor(context, R.color.glass_ice_text_secondary),
+        textOnNumber   = ContextCompat.getColor(context, R.color.glass_ice_text_on_number),
+        textOnSpecial  = ContextCompat.getColor(context, R.color.glass_ice_text_on_special),
+        textOnOperator = ContextCompat.getColor(context, R.color.glass_ice_text_on_operator)
+    )
 }

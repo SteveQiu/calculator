@@ -32,6 +32,10 @@
         "source": "com.example.calculator.app-main-53:/mipmap-xxxhdpi/ic_launcher.png"
     },
     {
+        "merged": "com.example.calculator.app-debug-51:/drawable_ic_theme_glass_ice.xml.flat",
+        "source": "com.example.calculator.app-main-53:/drawable/ic_theme_glass_ice.xml"
+    },
+    {
         "merged": "com.example.calculator.app-debug-51:/drawable_bg_theme_preview_card.xml.flat",
         "source": "com.example.calculator.app-main-53:/drawable/bg_theme_preview_card.xml"
     },

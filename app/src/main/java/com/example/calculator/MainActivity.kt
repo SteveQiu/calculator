@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.calculator.databinding.ActivityMainBinding
 import com.example.calculator.di.AppModule
 import com.example.calculator.model.ThemeId
-import com.example.calculator.model.toColors
+import com.example.calculator.model.ThemeRegistry
 import com.example.calculator.ui.ThemePickerDialog
 import com.example.calculator.ui.ThemeUnlockListener
 import com.example.calculator.viewmodel.CalculatorViewModel
@@ -103,22 +103,14 @@ class MainActivity : AppCompatActivity(), ThemeUnlockListener {
     }
 
     private fun applyThemeColors(themeId: ThemeId) {
-        val colors = themeId.toColors(this)
+        val theme  = ThemeRegistry.forId(themeId)
+        val colors = theme.colors(this)
 
         binding.root.setBackgroundColor(colors.background)
         binding.tvDisplay.setTextColor(colors.textPrimary)
         binding.tvExpression.setTextColor(colors.textSecondary)
 
-        // Update Theme Button Icon based on theme
-        val themeIcon = when(themeId) {
-            ThemeId.RABBIT -> "🐰"
-            ThemeId.PANDA -> "🐼"
-            ThemeId.MIDNIGHT -> "🌙"
-            ThemeId.OCEAN -> "🌊"
-            ThemeId.SUNSET -> "🌇"
-            else -> "🌙"
-        }
-        binding.btnTheme.text = themeIcon
+        binding.btnTheme.text = theme.iconEmoji ?: "🎨"
 
         val numberTint   = ColorStateList.valueOf(colors.btnNumber)
         val specialTint  = ColorStateList.valueOf(colors.btnSpecial)

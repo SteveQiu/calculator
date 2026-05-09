@@ -1472,6 +1472,18 @@ color error_color_material_dark
 color error_color_material_light
 color foreground_material_dark
 color foreground_material_light
+color glass_ice_accent
+color glass_ice_background
+color glass_ice_btn_number
+color glass_ice_btn_operator
+color glass_ice_btn_special
+color glass_ice_display_bg
+color glass_ice_ghost
+color glass_ice_text_on_number
+color glass_ice_text_on_operator
+color glass_ice_text_on_special
+color glass_ice_text_primary
+color glass_ice_text_secondary
 color highlighted_text_material_dark
 color highlighted_text_material_light
 color ic_launcher_background
@@ -3142,6 +3154,7 @@ drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
 drawable ic_search_black_24
+drawable ic_theme_glass_ice
 drawable m3_avd_hide_password
 drawable m3_avd_show_password
 drawable m3_bottom_sheet_drag_handle
@@ -3490,6 +3503,7 @@ id inward
 id is_pooling_container_tag
 id italic
 id item_touch_helper_previous_elevation
+id ivThemeIcon
 id jumpToEnd
 id jumpToStart
 id labeled

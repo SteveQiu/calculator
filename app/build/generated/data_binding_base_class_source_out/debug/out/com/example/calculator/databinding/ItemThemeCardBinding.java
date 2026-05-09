@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -41,6 +42,9 @@ public final class ItemThemeCardBinding implements ViewBinding {
   public final View dotSpecial;
 
   @NonNull
+  public final ImageView ivThemeIcon;
+
+  @NonNull
   public final LinearLayout lockOverlay;
 
   @NonNull
@@ -61,9 +65,9 @@ public final class ItemThemeCardBinding implements ViewBinding {
   private ItemThemeCardBinding(@NonNull MaterialCardView rootView,
       @NonNull MaterialButton btnCardBuy, @NonNull MaterialButton btnCardWatchAd,
       @NonNull MaterialCardView cardRoot, @NonNull View dotNumber, @NonNull View dotOperator,
-      @NonNull View dotSpecial, @NonNull LinearLayout lockOverlay, @NonNull LinearLayout paletteRow,
-      @NonNull FrameLayout previewBg, @NonNull TextView tvBadge, @NonNull TextView tvThemeName,
-      @NonNull TextView tvThemeNameOverlay) {
+      @NonNull View dotSpecial, @NonNull ImageView ivThemeIcon, @NonNull LinearLayout lockOverlay,
+      @NonNull LinearLayout paletteRow, @NonNull FrameLayout previewBg, @NonNull TextView tvBadge,
+      @NonNull TextView tvThemeName, @NonNull TextView tvThemeNameOverlay) {
     this.rootView = rootView;
     this.btnCardBuy = btnCardBuy;
     this.btnCardWatchAd = btnCardWatchAd;
@@ -71,6 +75,7 @@ public final class ItemThemeCardBinding implements ViewBinding {
     this.dotNumber = dotNumber;
     this.dotOperator = dotOperator;
     this.dotSpecial = dotSpecial;
+    this.ivThemeIcon = ivThemeIcon;
     this.lockOverlay = lockOverlay;
     this.paletteRow = paletteRow;
     this.previewBg = previewBg;
@@ -138,6 +143,12 @@ public final class ItemThemeCardBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.ivThemeIcon;
+      ImageView ivThemeIcon = ViewBindings.findChildViewById(rootView, id);
+      if (ivThemeIcon == null) {
+        break missingId;
+      }
+
       id = R.id.lockOverlay;
       LinearLayout lockOverlay = ViewBindings.findChildViewById(rootView, id);
       if (lockOverlay == null) {
@@ -175,8 +186,8 @@ public final class ItemThemeCardBinding implements ViewBinding {
       }
 
       return new ItemThemeCardBinding((MaterialCardView) rootView, btnCardBuy, btnCardWatchAd,
-          cardRoot, dotNumber, dotOperator, dotSpecial, lockOverlay, paletteRow, previewBg, tvBadge,
-          tvThemeName, tvThemeNameOverlay);
+          cardRoot, dotNumber, dotOperator, dotSpecial, ivThemeIcon, lockOverlay, paletteRow,
+          previewBg, tvBadge, tvThemeName, tvThemeNameOverlay);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

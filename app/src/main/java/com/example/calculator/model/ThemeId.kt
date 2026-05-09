@@ -6,7 +6,8 @@ enum class ThemeId(val displayName: String, val isPremium: Boolean, val skuId: S
     OCEAN("Ocean", true, "theme_ocean"),
     SUNSET("Sunset", true, "theme_sunset"),
     RABBIT("Rabbit 🐰🥕", true, "theme_rabbit"),
-    PANDA("Panda 🐼", true, "theme_panda");
+    PANDA("Panda 🐼", true, "theme_panda"),
+    GLASS_ICE("Glass Ice", true, "theme_glass_ice");
 
     companion object {
         fun fromKey(key: String): ThemeId =

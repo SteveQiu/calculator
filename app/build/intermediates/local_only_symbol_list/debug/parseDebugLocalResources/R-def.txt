@@ -30,6 +30,18 @@ color colorTextOnOperator
 color colorTextOnSpecial
 color colorTextPrimary
 color colorTextSecondary
+color glass_ice_accent
+color glass_ice_background
+color glass_ice_btn_number
+color glass_ice_btn_operator
+color glass_ice_btn_special
+color glass_ice_display_bg
+color glass_ice_ghost
+color glass_ice_text_on_number
+color glass_ice_text_on_operator
+color glass_ice_text_on_special
+color glass_ice_text_primary
+color glass_ice_text_secondary
 color ic_launcher_background
 color midnight_background
 color midnight_btn_number
@@ -89,6 +101,7 @@ color sunset_text_secondary
 drawable bg_theme_preview_card
 drawable bg_theme_preview_dialog
 drawable ic_launcher_foreground
+drawable ic_theme_glass_ice
 drawable shape_palette_dot
 id btn0
 id btn1
@@ -122,6 +135,7 @@ id cardRoot
 id dotNumber
 id dotOperator
 id dotSpecial
+id ivThemeIcon
 id lockOverlay
 id paletteRow
 id previewBg

@@ -110,7 +110,14 @@ _Appended by Rusty after each session._
 - Overlay layouts that cover sibling views need careful bounds management. Either exclude certain areas from the overlay, or duplicate the content inside it.
 - Unlock state and badge text should be derived from the same source of truth to avoid drift.
 
-### 2026-05-09 — Bug Fixes: Locked Card Names + Display Text Size
+### 2026-05-09 — Glass Ice Theme Visuals
+
+- **Color dedup:** Basher had already committed a `glass_ice_*` palette using the standard `{theme}_{role}` naming convention. Avoided duplicates by removing my parallel block and instead adding only the missing `glass_ice_accent` (#5BB8D4) and correcting `glass_ice_text_on_operator` to #0D2137 (dark navy, not ice blue, for contrast on operator buttons). Always check existing color entries before adding a new theme palette.
+- **Snowflake drawable:** `ic_theme_glass_ice.xml` — 24dp VectorDrawable with 8-arm snowflake (4 cardinal + 4 diagonal arms), circular tips on each arm, side-branch nubs on the vertical arms, and a central circle body. All paths use `#5BB8D4` fill. No stroke needed at icon scale.
+- **Card icon integration point:** Added `ivThemeIcon` (20dp ImageView, `visibility="gone"`) inside a horizontal row alongside `tvThemeName` in `item_theme_card.xml`. Adapter exposes `iconResFor(ThemeId): Int?` — returns null for all current themes, ready for Basher to add `ThemeId.GLASS_ICE -> R.drawable.ic_theme_glass_ice` when the enum entry lands.
+- **Build:** `assembleDebug` — **BUILD SUCCESSFUL** (commit `bb0ec21`).
+
+
 
 **Bug 1 fixed (item_theme_card.xml + adapters):**
 - Added `tvThemeNameOverlay` TextView inside `lockOverlay` with `textColor="@android:color/white"` so the theme name is visible over the dark overlay.
