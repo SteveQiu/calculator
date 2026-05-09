@@ -97,6 +97,7 @@ class ThemeAdapter(
     inner class ThemeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val card: MaterialCardView  = itemView.findViewById(R.id.cardRoot)
         val themeName: TextView     = itemView.findViewById(R.id.tvThemeName)
+        val themeNameOverlay: TextView = itemView.findViewById(R.id.tvThemeNameOverlay)
         val badge: TextView         = itemView.findViewById(R.id.tvBadge)
         val lockOverlay: View       = itemView.findViewById(R.id.lockOverlay)
         val previewBg: View         = itemView.findViewById(R.id.previewBg)
@@ -120,6 +121,7 @@ class ThemeAdapter(
         val colors     = themeId.toColors(holder.itemView.context)
 
         holder.themeName.text = themeId.displayName
+        holder.themeNameOverlay.text = themeId.displayName
         holder.badge.text = when {
             isActive          -> "✓ Active"
             themeId.isPremium -> "Premium"

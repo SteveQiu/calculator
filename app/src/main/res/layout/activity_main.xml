@@ -62,13 +62,12 @@
             android:layout_marginTop="8dp"
             android:text="0"
             android:textColor="@color/colorTextPrimary"
-            android:gravity="end"
+            android:textSize="64sp"
+            android:gravity="bottom|end"
+            android:paddingBottom="8dp"
+            android:paddingEnd="16dp"
             android:singleLine="true"
-            android:ellipsize="start"
-            app:autoSizeTextType="uniform"
-            app:autoSizeMinTextSize="32sp"
-            app:autoSizeMaxTextSize="80sp"
-            app:autoSizeStepGranularity="2sp" />
+            android:ellipsize="start" />
     </LinearLayout>
 
     <!-- 3. Button Grid (fixed size for rows to keep them large) -->

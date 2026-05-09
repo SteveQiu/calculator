@@ -109,6 +109,7 @@ class ThemePickerDialog : BottomSheetDialogFragment() {
         inner class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val card: MaterialCardView = itemView.findViewById(R.id.cardRoot)
             val name: TextView         = itemView.findViewById(R.id.tvThemeName)
+            val nameOverlay: TextView  = itemView.findViewById(R.id.tvThemeNameOverlay)
             val badge: TextView        = itemView.findViewById(R.id.tvBadge)
             val lockOverlay: View      = itemView.findViewById(R.id.lockOverlay)
             val previewBg: View        = itemView.findViewById(R.id.previewBg)
@@ -132,6 +133,7 @@ class ThemePickerDialog : BottomSheetDialogFragment() {
             val colors     = themeId.toColors(holder.itemView.context)
 
             holder.name.text = themeId.displayName
+            holder.nameOverlay.text = themeId.displayName
             holder.badge.text = when {
                 isActive          -> "✓ Active"
                 themeId.isPremium -> "Premium"
