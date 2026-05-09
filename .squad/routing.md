@@ -6,12 +6,14 @@ How to decide who handles what.
 
 | Work Type | Route To | Examples |
 |-----------|----------|----------|
-| {domain 1} | {Name} | {example tasks} |
-| {domain 2} | {Name} | {example tasks} |
-| {domain 3} | {Name} | {example tasks} |
-| Code review | {Name} | Review PRs, check quality, suggest improvements |
-| Testing | {Name} | Write tests, find edge cases, verify fixes |
-| Scope & priorities | {Name} | What to build next, trade-offs, decisions |
+| Calculator logic & core Android | Basher | Expression parsing, operations, ViewModel, Repository |
+| AdMob / rewarded ads | Basher | Ad loading, reward grants, unlock flow |
+| Google Play Billing | Basher | Purchase flow, token validation, restore purchases |
+| UI layouts & themes | Rusty | XML layouts, color systems, theme switching, locked preview |
+| Architecture & decisions | Danny | Project structure, patterns, library choices |
+| Code review | Danny | Review PRs, enforce standards, gate releases |
+| Testing & QA | Linus | Unit tests, Espresso tests, billing edge cases |
+| Scope & priorities | Danny | What to build next, trade-offs, decisions |
 | Session logging | Scribe | Automatic — never needs routing |
 
 ## Issue Routing
