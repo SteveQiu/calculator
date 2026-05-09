@@ -61,3 +61,23 @@ _Appended by Rusty after each session._
 **Cross-reference:** Layout XML (`activity_main.xml`) matches hierarchy — no missing views. Color values in `colors.xml` are correct. Issue is in runtime theme binding, not static resources.
 
 **Recommendation:** Investigate `ThemeManager` or `MainActivity.applyTheme()` — the overlay may be set but views are not refreshing their tints/backgroundTint from the new context.
+
+### 2026-05-09 — Visual Inspection #2 (Post-Fix)
+
+**Good news:** The black screen issue from earlier inspection is RESOLVED. Calculator now renders correctly with the Midnight theme active.
+
+**ThemePickerDialog Inspection:**
+- BottomSheetDialogFragment opens correctly from moon icon tap
+- 2-column RecyclerView grid displays 6 theme cards
+- Color swatches (3 dots) render properly for all themes
+- Active theme (Midnight) has purple highlight border + "✓ Active" badge
+- "WATCH AD" and "BUY FOR $0.99" buttons visible on locked themes
+
+**Bugs Found:**
+1. **Locked theme cards hide theme names** — The `lockOverlay` covers the entire card, obscuring the theme name. Users can't tell which premium theme they're about to unlock without recognizing the color palette.
+2. **Panda theme state inconsistency** — Shows "Premium" badge but NO lock overlay or unlock buttons. Either it should be locked, or the badge should say "Free".
+3. **Display text size** — The "0" on main screen appears small; should be larger for calculator aesthetic.
+
+**Learnings:**
+- Overlay layouts that cover sibling views need careful bounds management. Either exclude certain areas from the overlay, or duplicate the content inside it.
+- Unlock state and badge text should be derived from the same source of truth to avoid drift.
