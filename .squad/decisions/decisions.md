@@ -159,3 +159,66 @@
 - Bottom sheet drag handle visible, close button functional
 - All calculator buttons respond to taps
 - Theme switching works
+
+---
+
+### Theme System Modularization + ThemeRegistry (Basher)
+
+**Date:** 2026-05-09  
+**Status:** Implemented  
+**Commit:** 070fdd6  
+
+**Context:** Original theme system scattered metadata across three files (`ThemeId.kt`, `ThemeColors.kt`, `ThemePickerDialog.kt`, `MainActivity.kt`). Adding a new theme required editing 4 files with no compile-time reminder if one was missed.
+
+**Solution:** Created self-describing `Theme` data class and `ThemeRegistry` singleton:
+
+- **`model/Theme.kt`** — `Theme` data class with color function type `(Context) -> ThemeColors`
+- **`model/ThemeRegistry.kt`** — singleton holding all themes in `all: List<Theme>` with `forId()` lookup
+- **New theme onboarding:** Add enum entry in `ThemeId.kt` → add color resources in `colors.xml` → add `when` branch in `ThemeColors.kt` → add `Theme(...)` entry in `ThemeRegistry.all`. Done.
+
+**Key Design:**
+- `colors` is a function `(Context) -> ThemeColors` to defer color resource resolution until runtime
+- `ThemeRegistry.forId()` falls back to CLASSIC for unknown theme IDs
+- `toColors()` extension preserved as canonical color builder; ThemeRegistry delegates to it
+- `ThemeId` enum still carries `displayName`/`isPremium`/`skuId` for sync; kept both for backward compatibility
+
+**GLASS_ICE Palette:**
+- Background: `#E8F4FD`
+- Buttons: white (number), `#D0EAF8` (special), `#B3D9F5` (operator)
+- Text: `#1A3A5C` primary, `#4A7A9B` secondary, `#1A3A5C` on all buttons
+- Display bg: `#F0F8FF`
+
+---
+
+### Glass Ice Theme — Visuals (Rusty)
+
+**Date:** 2026-05-09  
+**Status:** Implemented  
+**Commit:** bb0ec21  
+
+**Deliverables:**
+1. **Color palette** (`colors.xml`): 11 `glass_ice_*` resources matching Basher's convention
+   - Operator button text = `#0D2137` (dark navy) for contrast on light ice blue buttons (~8:1 contrast)
+   - Added `glass_ice_accent = #5BB8D4` for snowflake icon and highlights
+2. **Snowflake icon** (`ic_theme_glass_ice.xml`): 24dp VectorDrawable
+   - Central circle + 8 arms (4 cardinal, 4 diagonal)
+   - Rounded proportions with side branches for snowflake realism
+   - Circular tips (r≈0.75dp) for "cute dot" effect
+   - Fill: `#5BB8D4` (glass_ice_accent), single flat color
+3. **Card layout** (`item_theme_card.xml`): Added `ivThemeIcon` (20dp ImageView) in horizontal layout beside `tvThemeName`
+   - Icon visibility controlled per theme
+   - Hidden by default with `visibility="gone"` (no layout impact)
+
+**Adapter integration:** `ThemePickerDialog.ThemeCardAdapter` has `iconResFor(ThemeId): Int?` helper. Wire Glass Ice by adding one line in implementation.
+
+---
+
+### Glass Ice Wiring — Registry Integration (Rusty)
+
+**Date:** 2026-05-09  
+**Status:** Implemented  
+**Commit:** d40fa0b  
+
+**Change:** Wired `R.drawable.ic_theme_glass_ice` into `ThemeRegistry` GLASS_ICE entry via `iconRes` field.
+
+**Result:** Glass Ice icon now displays in theme picker card alongside theme name.

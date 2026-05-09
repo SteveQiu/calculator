@@ -8,9 +8,16 @@
 - **Goal:** Calculator logic + dual unlock path: watch a rewarded ad to unlock a theme temporarily/permanently, OR purchase via Google Pay (Play Billing) for permanent unlock
 - **Repo:** https://github.com/SteveQiu/calculator.git
 
-## Learnings
+## 📋 Summary of Prior Work (2026-05-08 through 2026-05-09, early)
 
-_Appended by Basher after each session._
+**Session 2026-05-08:** Full MVVM refactor — implemented CalculatorViewModel, ThemeRepository (DataStore), BillingRepository (Play Billing client), AdRepository (RewardedAd), ThemeViewModel, ThemePickerActivity with adapter. Build successful.
+
+**Session 2026-05-09 (early sessions):**
+1. **PANDA Black Screen Fix (0c23fe7):** Root cause = dark Material theme base + black initial background + async color application. Fix: Light Material base + sync `applyThemeColors()` in `onCreate()`.
+2. **ThemeUnlockListener Wiring:** Created interface, wired `ThemePickerDialog` + `ThemeUnlockDialog` to `MainActivity` via `requireActivity()` pattern. Added `observeUiEvents()` for Snackbar feedback.
+3. **Panda Lock/Badge State Inconsistency (de2f771):** Badge logic not distinguishing locked vs owned; `unlockedThemesFlow` incorrectly persisting free themes. Fix: Badge text based on `isUnlocked`, DataStore filtered for premium-only, StateFlow initial value `emptySet()`.
+
+See `.squad/decisions/decisions.md` for full decision records and architectural notes.
 
 ## Session — 2026-05-09 — Theme System Modularization + GLASS_ICE
 
@@ -217,3 +224,40 @@ The black screen had **three contributing causes** (not one):
 ✓ Free themes (CLASSIC) correctly excluded from unlock persistence
 ✓ Badge state consistent across all themes
 ✓ Commit: `de2f771`
+
+## Session — 2026-05-09 — Theme System Modularization + Glass Ice Integration (basher-3, rusty-4, rusty-5)
+
+### Work Done (Basher-3)
+
+**Theme System Modularization (070fdd6)**
+- Created `Theme` data class with self-describing metadata: `id`, `displayName`, `isPremium`, `colors: (Context) → ThemeColors`, `iconRes`, `iconEmoji`, `skuId`
+- Created `ThemeRegistry` singleton: `all: List<Theme>`, `forId(id): Theme` with CLASSIC fallback
+- Added `GLASS_ICE` to `ThemeId` enum (`isPremium=true`, `skuId="theme_glass_ice"`)
+- Added `GLASS_ICE` case to `ThemeColors.toColors()` with 11 color resources
+- Refactored `ThemePickerDialog`: adapter now reads `List<Theme>` from registry; all metadata derived from `Theme` object
+- Refactored `MainActivity.applyThemeColors`: uses `ThemeRegistry.forId(id).colors(ctx)` instead of hardcoded when blocks
+
+**Key Design:** `colors` field is function type `(Context) → ThemeColors` to defer Android resource resolution until runtime while keeping color wiring self-contained in ThemeRegistry. Callers use `theme.colors(context)` — readable and unambiguous.
+
+**New Theme Onboarding (single file chain):**
+1. Add enum entry to `ThemeId.kt`
+2. Add color resources to `colors.xml`
+3. Add `when` branch to `ThemeColors.kt`
+4. Add `Theme(...)` entry to `ThemeRegistry.all`
+Done — UI auto-discovers via `ThemeRegistry.all`.
+
+### Collaboration Notes
+
+- **Rusty's Glass Ice visuals (commits bb0ec21, d40fa0b):** 11-color palette with snowflake icon, wired into ThemeRegistry — seamless integration
+- **No regressions:** All current themes unaffected; Glass Ice integrated end-to-end
+- **Build:** `assembleDebug` — **BUILD SUCCESSFUL**
+
+### Key Technical Learnings
+
+- **`(Context) → ThemeColors` function field:** Defers Android resource resolution until runtime while keeping color wiring self-contained in ThemeRegistry. This is the right pattern for context-dependent values in otherwise pure data objects.
+
+- **ThemeRegistry as single source of truth:** Delegates to `toColors()` extension for color building, keeping `colors.xml` and `toColors()` as canonical. Eliminates hidden couplings where adding a theme didn't error if you forgot a field.
+
+- **Icon system extensibility:** `iconRes` and `iconEmoji` fields support both drawables and emoji. Hidden by default (`visibility="gone"`) — no layout impact. Future themes only need drawable + one-line adapter wiring.
+
+- **Theme enum redundancy is intentional:** `displayName`, `isPremium`, `skuId` kept on enum for backward compat. ThemeRegistry carries the canonical truth. Future cleanup could consolidate when broader refactor touches DataStore deserialization code.

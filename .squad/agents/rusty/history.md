@@ -8,11 +8,18 @@
 - **Goal:** Multiple premium-looking themes, runtime theme switching, locked theme preview with unlock UI (ad or Google Pay)
 - **Repo:** https://github.com/SteveQiu/calculator.git
 
-## Learnings
+## 📋 Summary of Prior Work (2026-05-08 through 2026-05-09, early)
 
-_Appended by Rusty after each session._
+**Session 2026-05-08:** Established dual-layer color system with prefixed naming in `colors.xml` (`classic_`, `midnight_`, `ocean_`, `sunset_`). Created per-theme files for style preview tools. Theme overlays added to `themes.xml`. Implemented `ThemePickerActivity` with RecyclerView grid layout, lock badge overlay, and unlock dialog pattern using CoordinatorLayout + BottomSheetBehavior.
 
-### 2026-05-08 — Multi-theme color system + picker/unlock UI
+**Session 2026-05-09 (early):** 
+1. **ThemePickerBottomSheet UI:** Replaced cycling button with BottomSheetDialogFragment showing all 6 themes in 2-column grid. Inline unlock CTAs (Watch Ad / Buy buttons) in card overlays. Uses `ThemeUnlockListener` interface for decoupling.
+2. **Visual Inspection + Bug Triage:** Black screen issue (resolved by Basher), 3 bugs found: (1) Locked theme names hidden by overlay, (2) PANDA theme inconsistent state, (3) Display text sizing.
+3. **Bug Fixes (rusty-3, ddf3ca3):** Added name overlay inside lock area for visibility; enlarged display text to 64sp with proper alignment.
+
+See `.squad/decisions/decisions.md` for full decision records and visual specifications.
+
+### 2026-05-09 — Glass Ice Theme Visuals + Wiring (rusty-4, rusty-5)
 
 - **Color system:** Established a dual-layer color strategy. All theme palettes live in `res/values/colors.xml` with clear prefixes (`classic_`, `midnight_`, `ocean_`, `sunset_`). Backward-compat aliases (`colorBackground`, etc.) point at classic_ colors so existing layouts and styles compile unchanged.
 - **Per-theme files:** Created `colors_midnight.xml`, `colors_ocean.xml`, `colors_sunset.xml` as self-contained palette references for style preview tools and future compile-time theme variants.
@@ -142,3 +149,54 @@ _Appended by Rusty after each session._
 ✓ Theme names now visible on locked premium cards
 ✓ Display number renders at 64sp with proper bottom-right alignment
 ✓ Build: `assembleDebug` — **BUILD SUCCESSFUL** (commit `ddf3ca3`)
+
+## Session — 2026-05-09 — Theme System Modularization + Glass Ice Integration
+
+### Work Done (Basher-3, Rusty-4, Rusty-5)
+
+**Basher-3: Theme System Modularization (070fdd6)**
+- Created `Theme` data class with self-describing metadata: `id`, `displayName`, `isPremium`, `colors: (Context) → ThemeColors`, `iconRes`, `iconEmoji`, `skuId`
+- Created `ThemeRegistry` singleton: `all: List<Theme>`, `forId(id): Theme` with CLASSIC fallback
+- Added `GLASS_ICE` to `ThemeId` enum (`isPremium=true`, `skuId="theme_glass_ice"`)
+- Added `GLASS_ICE` case to `ThemeColors.toColors()` with 11 color resources
+- Refactored `ThemePickerDialog`: adapter now reads `List<Theme>` from registry; all metadata (displayName, isPremium, colors, iconRes) derived from `Theme` object
+- Refactored `MainActivity.applyThemeColors`: uses `ThemeRegistry.forId(id).colors(ctx)` and `theme.iconEmoji` instead of hardcoded when blocks
+
+**Key Design:** `colors` field is function type `(Context) → ThemeColors` to defer Android resource resolution until runtime while keeping color wiring self-contained in ThemeRegistry. Callers use `theme.colors(context)` — readable and unambiguous.
+
+**New Theme Onboarding (single file chain):**
+1. Add enum entry to `ThemeId.kt`
+2. Add color resources to `colors.xml`
+3. Add `when` branch to `ThemeColors.kt`
+4. Add `Theme(...)` entry to `ThemeRegistry.all`
+Done — UI auto-discovers via `ThemeRegistry.all`.
+
+**Rusty-4: Glass Ice Theme Visuals (bb0ec21)**
+- 11-color palette: ice blue background (#E8F4FD), white/frost/sky blue buttons, navy primary text (#1A3A5C), slate secondary (#4A7A9B), dark navy operator text (#0D2137 for ~8:1 contrast)
+- Snowflake icon (`ic_theme_glass_ice.xml`): 24dp VectorDrawable with central circle, 8 arms (cardinal + diagonal), side branches, circular tips; fill color #5BB8D4
+- Card layout: Added `ivThemeIcon` (20dp ImageView) in horizontal LinearLayout alongside `tvThemeName`; visibility controlled per theme
+
+**Rationale for operator text:** Operator buttons use light ice blue background. Dark navy (#0D2137) provides ~8:1 contrast; lighter (#1A3A5C) would only give ~5:1.
+
+**Rusty-5: Glass Ice Wiring (d40fa0b)**
+- Wired `R.drawable.ic_theme_glass_ice` into ThemeRegistry GLASS_ICE entry via `iconRes` field
+- Snowflake icon now displays in theme picker card alongside theme name
+
+### Key Technical Learnings
+
+- **`(Context) → ThemeColors` as a field type:** Storing color factories as lambdas inside `Theme` defers context-dependent resolution without making Theme abstract. Callers use `theme.colors(context)` — natural and readable. This is the right pattern for context-dependent values in an otherwise pure data object.
+
+- **ThemeRegistry delegates to `toColors()` extension:** Rather than duplicating color resource references, each `Theme` entry's lambda calls `themeId.toColors(ctx)`. This keeps `colors.xml` as the single source of truth and `toColors()` as the canonical builder.
+
+- **Icon system is extensible:** `iconRes` and `iconEmoji` fields enable both Vector drawables and emoji. Hidden by default (`visibility="gone"`) — no impact for themes without icons. Future themes only need drawable + one-line adapter update.
+
+- **When-block icon mapping is a code smell:** The hidden coupling (adding a theme didn't error if you forgot icon) is eliminated by moving all metadata to `Theme` and requiring explicit registration in ThemeRegistry.
+
+### Architectural Integrity
+
+- **Theme + ThemeRegistry design:** Self-describing themes with compile-time registry enforce that all metadata is centralized. Forgetting a field is a build error. UI components (`ThemePickerDialog`, `MainActivity`) automatically discover and use themes via the registry.
+- **Color function type:** Cleanest solution for context-dependent color resolution in an immutable data class.
+- **No regressions:** All current themes unaffected; Glass Ice integrated end-to-end (Kotlin → visuals → UI).
+
+### Build Status
+✓ `assembleDebug` — **BUILD SUCCESSFUL** (commits 070fdd6, bb0ec21, d40fa0b)
