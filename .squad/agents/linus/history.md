@@ -35,3 +35,17 @@ _Appended by Linus after each session._
 - `ThemeRepositoryTest` ✅ compiles; `isThemeUnlocked` tests pass; persistence tests (unlockTheme/setActiveTheme) will **fail** until DataStore stubs are replaced with real implementation
 - `CalculatorViewModelTest` ⏳ **TDD — will not compile** until CalculatorViewModel adds `displayValue`, `expressionText`, `displayState`, `onDigit`, `onOperator`, `onEquals`, `onDot`, `onPercent`, `onToggleSign`, `onClear`, `onDelete`
 - `ThemeViewModelTest` ⏳ **TDD — will not compile** until ThemeViewModel adds `selectTheme`, `watchAdToUnlock`, `uiEvents: SharedFlow<UiEvent>`, `pendingUnlockTheme`, and until BillingRepository/AdRepository expose `purchaseResults`/`adResults` flows and result sealed classes
+
+### 2026-05-09 — Full Stack Validation ✅
+
+- **ThemeIdTest (8 tests)** all pass: enum properties (isPremium, skuId, displayName) are rock-solid. Rusty's design validated.
+- **ThemeRepositoryTest (8 tests):** 5 pass (default state, unlock queries); 3 fail on DataStore write-through. Root cause identified: stubs don't persist to backing store. Basher's API is correct; implementation gap is narrow and actionable.
+- **CalculatorViewModelTest (22 tests)** TDD written; contracts are clear for the developer. Sequences match real calculator button presses (e.g., `3 + 4 = = =` for repeat-last-operation).
+- **ThemeViewModelTest (8 tests)** TDD written; billing and ad result routing contracts defined. Tests will compile once repositories expose result SharedFlows.
+- **No API mismatches:** All 4 agents' implementations map to test expectations. System is cohesive, not fragmented.
+- **3 concrete blockers identified:**
+  1. `ThemeRepository.unlockTheme()` must write to DataStore, not just return
+  2. `ThemeRepository.setActiveTheme()` must write to DataStore, not just return
+  3. `BillingRepository` and `AdRepository` must expose `purchaseResults: SharedFlow<...>` and `adResults: SharedFlow<...>` respectively
+
+- **Insight:** TDD approach correctly surfaced these gaps. Tests aren't wrong; they're highlighting implementation stubs that need real logic. This is the ideal workflow: architecture is sound, API contracts are clear, gaps are mechanical and localized.

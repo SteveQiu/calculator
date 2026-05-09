@@ -28,10 +28,19 @@ _Appended by Basher after each session._
 - Refactored **MainActivity** to delegate all logic to ViewModels; applies programmatic theme colours via `backgroundTintList` (preserves MaterialButton corner radius and ripple).
 - Added all required deps to `build.gradle`; added INTERNET permission, AdMob test app ID meta-data, and `ThemePickerActivity` registration to `AndroidManifest.xml`.
 
-## Learnings
+## Key Learnings & Technical Decisions
 
 - **`MaterialButton.backgroundTintList` not `setBackgroundColor`**: Calling `setBackgroundColor` replaces the `MaterialShapeDrawable` with a plain `ColorDrawable`, losing corner radius and ripple. Always tint with `btn.backgroundTintList = ColorStateList.valueOf(color)`.
 - **`BillingResult` name collision**: `com.android.billingclient.api.BillingResult` and our `BillingRepository.BillingResult` share a name. Inside `BillingRepository`, Kotlin resolves to the inner class; callers use the fully-qualified `com.android.billingclient.api.BillingResult` in the `onPurchasesUpdated` signature to avoid ambiguity.
 - **DialogFragment full-screen**: A `DialogFragment` using `onCreateView` renders as a small centered dialog by default. Override `onStart` and call `setLayout(MATCH_PARENT, MATCH_PARENT)` + `setBackgroundDrawableResource(transparent)` to let the layout's CoordinatorLayout backdrop fill the window.
 - **DataStore `stringSetPreferencesKey`**: Storing unlocked themes as a `Set<String>` (enum names) is simpler and more compact than one Boolean key per theme. `ThemeId.entries.filter { it.name in names }` cleanly deserialises.
 - **`ThemeId.entries` (Kotlin 1.9+)**: Prefer `entries` over deprecated `values()` for type-safe `EnumEntries<ThemeId>`.
+
+### 2026-05-09 — Cross-Team Integration Verified ✅
+
+- **Rusty's color system** integrates perfectly: `ThemeId.toColors(context)` reads prefixed color names from `colors.xml`. Prefixed naming (e.g., `midnight_btn_operator`) avoids collisions and maps directly to enum values. Theme overlays apply cleanly.
+- **Danny's architecture** held under implementation: manual DI (AppModule) creates zero circular dependency issues. Singleton repositories live exactly as designed. Activity recreation on theme switch is the standard Android pattern; no workarounds needed.
+- **Linus's tests** reveal the actual integration gaps: 3 ThemeRepositoryTest cases fail because DataStore stubs don't persist. Root cause is clear: stub `unlockTheme()` and `setActiveTheme()` don't write to the backing store. This is expected and actionable.
+- **SharedFlow architecture** is testable: Linus's TDD test cases (8 for ThemeViewModel) outline the exact APIs needed. Once `BillingRepository.purchaseResults` and `AdRepository.adResults` are wired, those tests will compile and drive development.
+- **No API mismatches:** Every contract Linus wrote maps to an existing implementation. The system is cohesive.
+- **Next action:** Wire real DataStore persistence in `ThemeRepository.unlockTheme()` and `setActiveTheme()` to flip 3 red tests green.

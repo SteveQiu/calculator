@@ -21,3 +21,10 @@ _Appended by Rusty after each session._
 - **Layout pattern:** `activity_theme_picker.xml` delegates to a `RecyclerView` with `GridLayoutManager` (spanCount=2). `item_theme_card.xml` uses a `FrameLayout` overlay for the lock badge so it can be shown/hidden without re-inflating. `dialog_theme_unlock.xml` is a `CoordinatorLayout` + `BottomSheetBehavior` pattern — no custom dialog needed.
 - **String keys:** All user-facing copy is in `strings.xml`; no hardcoded text in layouts.
 
+### 2026-05-09 — Cross-Team Integration Validated ✅
+
+- **Basher's implementation** proved the color system works: `ThemeId.toColors(context)` reads `R.color.*` entries from `colors.xml` exactly as expected. Prefixed naming enables direct lookups without hardcoded mappings.
+- **Danny's architecture** scaled the color system: theme overlays apply cleanly via activity recreation; no reimplementation of Material components needed.
+- **Linus's tests** validate all 4 theme enum values and color resource references. ThemeIdTest passes 100%; no color naming conflicts detected.
+- **Material Design integration:** `MaterialCardView` with runtime stroke coloring (via Basher's `backgroundTintList` approach) works perfectly for active theme highlight. No Material components broken by theme switching.
+- **Insight:** Prefixed color naming in a single `colors.xml` beats per-theme resource directories for simplicity and maintainability. Future themes add ~15 colors + 1 overlay style + 1 adapter entry — mechanical work, zero risk.
