@@ -16,6 +16,7 @@
 | Rusty | Android UI Dev | [charter](.squad/agents/rusty/charter.md) | ✅ active |
 | Basher | Android Dev | [charter](.squad/agents/basher/charter.md) | ✅ active |
 | Linus | Tester | [charter](.squad/agents/linus/charter.md) | ✅ active |
+| Livingston | Build Engineer | [charter](.squad/agents/livingston/charter.md) | ✅ active |
 | Scribe | Session Logger | [charter](.squad/agents/scribe/charter.md) | ✅ active |
 | Ralph | Work Monitor | — | 🔄 Monitor |
 

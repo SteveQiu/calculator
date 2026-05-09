@@ -15,6 +15,12 @@ How to decide who handles what.
 | Testing & QA | Linus | Unit tests, Espresso tests, billing edge cases |
 | Scope & priorities | Danny | What to build next, trade-offs, decisions |
 | Session logging | Scribe | Automatic — never needs routing |
+| Build system & Gradle | Livingston | build.gradle, dependencies, build variants, Gradle errors |
+| Compilation errors | Livingston | Kotlin compile failures, annotation processor issues |
+| APK/AAB signing | Livingston | Keystore config, signing variants |
+| ProGuard / R8 | Livingston | Shrinking, obfuscation, keep rules |
+| CI pipeline | Livingston | GitHub Actions workflows, build health |
+| Dependency upgrades | Livingston | Library version bumps, conflict resolution |
 
 ## Issue Routing
 

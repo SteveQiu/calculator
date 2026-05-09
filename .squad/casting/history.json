@@ -11,7 +11,8 @@
         { "name": "Danny", "role": "Lead" },
         { "name": "Rusty", "role": "Android UI Dev" },
         { "name": "Basher", "role": "Android Dev" },
-        { "name": "Linus", "role": "Tester" }
+        { "name": "Linus", "role": "Tester" },
+        { "name": "Livingston", "role": "Build Engineer", "model": "gemini-3-pro-preview" }
       ]
     }
   ]
