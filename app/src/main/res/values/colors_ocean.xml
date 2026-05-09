@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Ocean theme color definitions.
+    These are the canonical source for the Ocean palette.
+    Values are also declared in colors.xml with the ocean_ prefix.
+    This file exists so style previews and tools can reference a
+    self-contained, named-theme resource set.
+-->
+<resources>
+    <color name="ocean_background">#0A1628</color>
+    <color name="ocean_btn_number">#112240</color>
+    <color name="ocean_btn_special">#0E1E38</color>
+    <color name="ocean_btn_operator">#00B4D8</color>
+    <color name="ocean_text_primary">#CAF0F8</color>
+    <color name="ocean_text_secondary">#5BA0B5</color>
+    <color name="ocean_text_on_number">#CAF0F8</color>
+    <color name="ocean_text_on_special">#8BB8C8</color>
+    <color name="ocean_text_on_operator">#0A1628</color>
+    <color name="ocean_ghost">#00000000</color>
+    <color name="ocean_display_bg">#0A1628</color>
+</resources>

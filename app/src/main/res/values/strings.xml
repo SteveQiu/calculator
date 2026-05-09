@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Calculator</string>
+
+    <!-- Theme picker -->
+    <string name="theme_picker_title">Themes</string>
+    <string name="unlock_theme">Unlock Theme</string>
+    <string name="watch_ad_to_unlock">Watch Ad</string>
+    <string name="buy_to_unlock">Buy for $0.99</string>
+    <string name="restore_purchase">Restore Purchase</string>
+
+    <!-- Theme names -->
+    <string name="theme_classic">Classic</string>
+    <string name="theme_midnight">Midnight</string>
+    <string name="theme_ocean">Ocean</string>
+    <string name="theme_sunset">Sunset</string>
+
+    <!-- Theme badges -->
+    <string name="theme_free">Free</string>
+    <string name="theme_premium">Premium</string>
+
+    <!-- Ad state -->
+    <string name="ad_loading">Loading ad…</string>
+    <string name="ad_not_available">Ad not available. Try again later.</string>
 </resources>

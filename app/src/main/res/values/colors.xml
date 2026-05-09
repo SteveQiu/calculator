@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Light theme colours -->
-    <color name="colorBackground">#F2F2F7</color>
-    <color name="colorBtnNumber">#FFFFFF</color>
-    <color name="colorBtnSpecial">#A5A5A5</color>
-    <color name="colorBtnOperator">#FF9F0A</color>
-    <color name="colorTextPrimary">#1C1C1E</color>
-    <color name="colorTextSecondary">#8E8E93</color>
-    <color name="colorTextOnNumber">#1C1C1E</color>
-    <color name="colorTextOnSpecial">#1C1C1E</color>
-    <color name="colorTextOnOperator">#FFFFFF</color>
-    <color name="colorGhost">#00000000</color>
+
+    <!-- ═══════════════════════════════════════════════════
+         CLASSIC THEME  (light, free)
+         ═══════════════════════════════════════════════════ -->
+    <color name="classic_background">#F2F2F7</color>
+    <color name="classic_btn_number">#FFFFFF</color>
+    <color name="classic_btn_special">#D1D1D6</color>
+    <color name="classic_btn_operator">#FF9F0A</color>
+    <color name="classic_text_primary">#1C1C1E</color>
+    <color name="classic_text_secondary">#8E8E93</color>
+    <color name="classic_text_on_number">#1C1C1E</color>
+    <color name="classic_text_on_special">#1C1C1E</color>
+    <color name="classic_text_on_operator">#FFFFFF</color>
+    <color name="classic_ghost">#00000000</color>
+    <color name="classic_display_bg">#F2F2F7</color>
+
+    <!-- ═══════════════════════════════════════════════════
+         MIDNIGHT THEME  (premium, dark blue-black)
+         ═══════════════════════════════════════════════════ -->
+    <color name="midnight_background">#0D0D1A</color>
+    <color name="midnight_btn_number">#1A1A2E</color>
+    <color name="midnight_btn_special">#16213E</color>
+    <color name="midnight_btn_operator">#7B61FF</color>
+    <color name="midnight_text_primary">#E8E8FF</color>
+    <color name="midnight_text_secondary">#6B6B9B</color>
+    <color name="midnight_text_on_number">#E8E8FF</color>
+    <color name="midnight_text_on_special">#A0A0C8</color>
+    <color name="midnight_text_on_operator">#FFFFFF</color>
+    <color name="midnight_ghost">#00000000</color>
+    <color name="midnight_display_bg">#0D0D1A</color>
+
+    <!-- ═══════════════════════════════════════════════════
+         OCEAN THEME  (premium, teal/cyan)
+         ═══════════════════════════════════════════════════ -->
+    <color name="ocean_background">#0A1628</color>
+    <color name="ocean_btn_number">#112240</color>
+    <color name="ocean_btn_special">#0E1E38</color>
+    <color name="ocean_btn_operator">#00B4D8</color>
+    <color name="ocean_text_primary">#CAF0F8</color>
+    <color name="ocean_text_secondary">#5BA0B5</color>
+    <color name="ocean_text_on_number">#CAF0F8</color>
+    <color name="ocean_text_on_special">#8BB8C8</color>
+    <color name="ocean_text_on_operator">#0A1628</color>
+    <color name="ocean_ghost">#00000000</color>
+    <color name="ocean_display_bg">#0A1628</color>
+
+    <!-- ═══════════════════════════════════════════════════
+         SUNSET THEME  (premium, warm orange/pink)
+         ═══════════════════════════════════════════════════ -->
+    <color name="sunset_background">#1A0A0A</color>
+    <color name="sunset_btn_number">#2D1515</color>
+    <color name="sunset_btn_special">#251010</color>
+    <color name="sunset_btn_operator">#FF6B6B</color>
+    <color name="sunset_text_primary">#FFD5C8</color>
+    <color name="sunset_text_secondary">#C08070</color>
+    <color name="sunset_text_on_number">#FFD5C8</color>
+    <color name="sunset_text_on_special">#D09080</color>
+    <color name="sunset_text_on_operator">#FFFFFF</color>
+    <color name="sunset_ghost">#00000000</color>
+    <color name="sunset_display_bg">#1A0A0A</color>
+
+    <!-- ═══════════════════════════════════════════════════
+         BACKWARD-COMPAT ALIASES  → Classic colors
+         (keeps existing layout/style references working)
+         ═══════════════════════════════════════════════════ -->
+    <color name="colorBackground">@color/classic_background</color>
+    <color name="colorBtnNumber">@color/classic_btn_number</color>
+    <color name="colorBtnSpecial">@color/classic_btn_special</color>
+    <color name="colorBtnOperator">@color/classic_btn_operator</color>
+    <color name="colorTextPrimary">@color/classic_text_primary</color>
+    <color name="colorTextSecondary">@color/classic_text_secondary</color>
+    <color name="colorTextOnNumber">@color/classic_text_on_number</color>
+    <color name="colorTextOnSpecial">@color/classic_text_on_special</color>
+    <color name="colorTextOnOperator">@color/classic_text_on_operator</color>
+    <color name="colorGhost">@color/classic_ghost</color>
+
 </resources>

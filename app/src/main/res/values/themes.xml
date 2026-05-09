@@ -42,4 +42,57 @@
         <item name="rippleColor">@color/colorBtnSpecial</item>
     </style>
 
+    <!-- ═══════════════════════════════════════════════════
+         THEME OVERLAYS — applied programmatically at runtime
+         ═══════════════════════════════════════════════════ -->
+
+    <style name="ThemeOverlay.Calculator.Midnight" parent="">
+        <item name="android:colorBackground">@color/midnight_background</item>
+        <item name="colorBackground">@color/midnight_background</item>
+        <item name="colorBtnNumber">@color/midnight_btn_number</item>
+        <item name="colorBtnSpecial">@color/midnight_btn_special</item>
+        <item name="colorBtnOperator">@color/midnight_btn_operator</item>
+        <item name="colorTextPrimary">@color/midnight_text_primary</item>
+        <item name="colorTextSecondary">@color/midnight_text_secondary</item>
+        <item name="colorTextOnNumber">@color/midnight_text_on_number</item>
+        <item name="colorTextOnSpecial">@color/midnight_text_on_special</item>
+        <item name="colorTextOnOperator">@color/midnight_text_on_operator</item>
+    </style>
+
+    <style name="ThemeOverlay.Calculator.Ocean" parent="">
+        <item name="android:colorBackground">@color/ocean_background</item>
+        <item name="colorBackground">@color/ocean_background</item>
+        <item name="colorBtnNumber">@color/ocean_btn_number</item>
+        <item name="colorBtnSpecial">@color/ocean_btn_special</item>
+        <item name="colorBtnOperator">@color/ocean_btn_operator</item>
+        <item name="colorTextPrimary">@color/ocean_text_primary</item>
+        <item name="colorTextSecondary">@color/ocean_text_secondary</item>
+        <item name="colorTextOnNumber">@color/ocean_text_on_number</item>
+        <item name="colorTextOnSpecial">@color/ocean_text_on_special</item>
+        <item name="colorTextOnOperator">@color/ocean_text_on_operator</item>
+    </style>
+
+    <style name="ThemeOverlay.Calculator.Sunset" parent="">
+        <item name="android:colorBackground">@color/sunset_background</item>
+        <item name="colorBackground">@color/sunset_background</item>
+        <item name="colorBtnNumber">@color/sunset_btn_number</item>
+        <item name="colorBtnSpecial">@color/sunset_btn_special</item>
+        <item name="colorBtnOperator">@color/sunset_btn_operator</item>
+        <item name="colorTextPrimary">@color/sunset_text_primary</item>
+        <item name="colorTextSecondary">@color/sunset_text_secondary</item>
+        <item name="colorTextOnNumber">@color/sunset_text_on_number</item>
+        <item name="colorTextOnSpecial">@color/sunset_text_on_special</item>
+        <item name="colorTextOnOperator">@color/sunset_text_on_operator</item>
+    </style>
+
+    <!-- Theme Picker Activity style -->
+    <style name="Theme.Calculator.ThemePicker" parent="Theme.Calculator">
+        <item name="android:windowAnimationStyle">@style/Animation.Calculator.Slide</item>
+    </style>
+
+    <style name="Animation.Calculator.Slide" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+
 </resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Sunset theme color definitions.
+    These are the canonical source for the Sunset palette.
+    Values are also declared in colors.xml with the sunset_ prefix.
+    This file exists so style previews and tools can reference a
+    self-contained, named-theme resource set.
+-->
+<resources>
+    <color name="sunset_background">#1A0A0A</color>
+    <color name="sunset_btn_number">#2D1515</color>
+    <color name="sunset_btn_special">#251010</color>
+    <color name="sunset_btn_operator">#FF6B6B</color>
+    <color name="sunset_text_primary">#FFD5C8</color>
+    <color name="sunset_text_secondary">#C08070</color>
+    <color name="sunset_text_on_number">#FFD5C8</color>
+    <color name="sunset_text_on_special">#D09080</color>
+    <color name="sunset_text_on_operator">#FFFFFF</color>
+    <color name="sunset_ghost">#00000000</color>
+    <color name="sunset_display_bg">#1A0A0A</color>
+</resources>
