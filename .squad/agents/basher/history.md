@@ -52,6 +52,49 @@ _Appended by Basher after each session._
   (overlaps system UI) or individual buttons (wrong position). `binding.root` is the calculator grid
   layout — perfect anchor.
 
+## Session — 2026-05-09 — Bug 2: Panda Premium Badge / Lock Overlay Fix
+
+### Work Done
+- Diagnosed the "Premium badge + no lock overlay" bug on the Panda theme card.
+- Applied three-part fix across four files; committed as `de2f771`.
+- Wrote decision to `.squad/decisions/inbox/basher-panda-fix.md`.
+
+### Root Cause Found
+
+Two compounding issues:
+
+1. **Badge text was always `"Premium"` for any `isPremium = true` theme**, regardless of whether
+   it was locked or already purchased. When PANDA landed in the DataStore unlocked set (e.g. from a
+   dev-time `unlockTheme(PANDA)` call), the card showed `"Premium"` badge + no lock overlay + no CTAs
+   — visually contradicting itself.
+
+2. **`unlockedThemesFlow` included free themes (CLASSIC)** via the default `setOf(ThemeId.CLASSIC.name)`.
+   Free themes have no business in the DataStore unlock set; their accessibility is determined entirely
+   by the `!isPremium` short-circuit in `isThemeUnlocked()`.
+
+### Changes Made
+
+| File | Change |
+|------|--------|
+| `ThemePickerDialog.kt` | Badge: `"Premium"` for all premium → `"✓ Owned"` when unlocked, `"Premium"` when locked |
+| `ThemePickerActivity.kt` | Same badge fix in `ThemeAdapter` |
+| `ThemeRepository.kt` | `unlockedThemesFlow` filter: added `it.isPremium &&` guard |
+| `ThemeViewModel.kt` | StateFlow initial value: `setOf(ThemeId.CLASSIC)` → `emptySet()` |
+
+### Key Technical Learnings
+
+- **Badge text must reflect both `isPremium` AND `isUnlocked`**: A two-axis state
+  (`isPremium × isUnlocked`) needs four badge variants, not two. The old single-axis check
+  (`isPremium -> "Premium"`) created an impossible-looking "Premium with no lock" state.
+
+- **DataStore unlocked set should only store premium theme names**: Free themes are always
+  accessible via `!isPremium` in `isThemeUnlocked()`. Storing them in the unlocked set is
+  semantic noise and can mask bugs. Filter with `it.isPremium && it.name in names`.
+
+- **StateFlow initial value should match the filtered flow semantics**: If `unlockedThemesFlow`
+  only emits premium themes, the initial StateFlow value should be `emptySet()` (no premium
+  theme is unlocked before DataStore loads), not `setOf(ThemeId.CLASSIC)`.
+
 ## Session — 2026-05-09 — PANDA Theme Black Screen Fix
 
 ### Work Done
