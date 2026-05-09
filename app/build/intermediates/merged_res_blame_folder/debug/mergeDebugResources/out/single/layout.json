@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-mergeDebugResources-50:\\layout\\item_theme_card.xml",
+        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\item_theme_card.xml"
+    },
+    {
+        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-mergeDebugResources-50:\\layout\\activity_theme_picker.xml",
+        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\activity_theme_picker.xml"
+    },
+    {
+        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-mergeDebugResources-50:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-mergeDebugResources-50:\\layout\\dialog_theme_unlock.xml",
+        "source": "C:\\Users\\qiuyu\\.gradle\\daemon\\8.13\\com.example.calculator.app-main-53:\\layout\\dialog_theme_unlock.xml"
+    },
+    {
+        "merged": "com.example.calculator.app-mergeDebugResources-50:/layout/activity_main.xml",
+        "source": "com.example.calculator.app-main-53:/layout/activity_main.xml"
+    }
+]

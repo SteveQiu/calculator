@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dark theme colours -->
-    <color name="colorBackground">#000000</color>
-    <color name="colorBtnNumber">#333333</color>
-    <color name="colorBtnSpecial">#636366</color>
-    <color name="colorBtnOperator">#FF9F0A</color>
-    <color name="colorTextPrimary">#FFFFFF</color>
-    <color name="colorTextSecondary">#EBEBF599</color>
-    <color name="colorTextOnNumber">#FFFFFF</color>
-    <color name="colorTextOnSpecial">#FFFFFF</color>
-    <color name="colorTextOnOperator">#FFFFFF</color>
-    <color name="colorGhost">#00000000</color>
+    <!--
+        All in-app theming is applied programmatically via applyThemeColors().
+        We do NOT override colors with dark values here because doing so causes
+        the initial layout state to be black before the async coroutine fires,
+        and interferes with MaterialButton.backgroundTintList for light themes
+        such as PANDA (#F5F5F5 background, #FFFFFF buttons).
+
+        The colorBackground alias must still be defined so that activity_main.xml
+        android:background="@color/colorBackground" resolves to the classic light
+        gray rather than black, preventing the black-screen flash at startup.
+    -->
+    <color name="colorBackground">@color/classic_background</color>
+    <color name="colorBtnNumber">@color/classic_btn_number</color>
+    <color name="colorBtnSpecial">@color/classic_btn_special</color>
+    <color name="colorBtnOperator">@color/classic_btn_operator</color>
+    <color name="colorTextPrimary">@color/classic_text_primary</color>
+    <color name="colorTextSecondary">@color/classic_text_secondary</color>
+    <color name="colorTextOnNumber">@color/classic_text_on_number</color>
+    <color name="colorTextOnSpecial">@color/classic_text_on_special</color>
+    <color name="colorTextOnOperator">@color/classic_text_on_operator</color>
+    <color name="colorGhost">@color/classic_ghost</color>
 </resources>

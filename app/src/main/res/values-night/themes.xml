@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Calculator" parent="Theme.MaterialComponents.NoActionBar">
+    <!--
+        Use the Light (non-dark) Material theme even in system dark mode.
+        All in-app theming (MIDNIGHT, OCEAN, SUNSET, PANDA, etc.) is applied
+        programmatically via applyThemeColors(). Keeping the Light base theme
+        ensures MaterialButton.backgroundTintList is applied without dark-mode
+        color processing that would override light-theme colors like PANDA.
+    -->
+    <style name="Theme.Calculator" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:statusBarColor">@color/colorBackground</item>
         <item name="android:navigationBarColor">@color/colorBackground</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 </resources>

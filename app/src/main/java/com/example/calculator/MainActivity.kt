@@ -58,6 +58,10 @@ class MainActivity : AppCompatActivity() {
 
         setupButtons()
         updateDisplay()
+        // Apply the current theme synchronously before the async flow fires.
+        // This prevents any black-screen flash caused by the dark-mode colorBackground
+        // override in values-night/colors.xml showing through before the coroutine runs.
+        applyThemeColors(themeViewModel.activeTheme.value)
         observeTheme()
     }
 
@@ -108,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             btn.setTextColor(colors.textOnNumber)
         }
 
-        listOf(binding.btnClear, binding.btnToggleSign, binding.btnPercent).forEach { btn ->
+        listOf(binding.btnClear, binding.btnToggleSign, binding.btnPercent, binding.btnDeleteRow).forEach { btn ->
             btn.backgroundTintList = specialTint
             btn.setTextColor(colors.textOnSpecial)
         }

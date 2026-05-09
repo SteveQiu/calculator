@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="color" name="colorBackground"/>
+    <attr format="color" name="colorBtnNumber"/>
+    <attr format="color" name="colorBtnOperator"/>
+    <attr format="color" name="colorBtnSpecial"/>
+    <attr format="color" name="colorTextOnNumber"/>
+    <attr format="color" name="colorTextOnOperator"/>
+    <attr format="color" name="colorTextOnSpecial"/>
+    <attr format="color" name="colorTextPrimary"/>
+    <attr format="color" name="colorTextSecondary"/>
+    <color name="classic_background">#F2F2F7</color>
+    <color name="classic_btn_number">#FFFFFF</color>
+    <color name="classic_btn_operator">#FF9F0A</color>
+    <color name="classic_btn_special">#D1D1D6</color>
+    <color name="classic_display_bg">#F2F2F7</color>
+    <color name="classic_ghost">#00000000</color>
+    <color name="classic_text_on_number">#1C1C1E</color>
+    <color name="classic_text_on_operator">#FFFFFF</color>
+    <color name="classic_text_on_special">#1C1C1E</color>
+    <color name="classic_text_primary">#1C1C1E</color>
+    <color name="classic_text_secondary">#8E8E93</color>
+    <color name="colorBackground">@color/classic_background</color>
+    <color name="colorBtnNumber">@color/classic_btn_number</color>
+    <color name="colorBtnOperator">@color/classic_btn_operator</color>
+    <color name="colorBtnSpecial">@color/classic_btn_special</color>
+    <color name="colorGhost">@color/classic_ghost</color>
+    <color name="colorTextOnNumber">@color/classic_text_on_number</color>
+    <color name="colorTextOnOperator">@color/classic_text_on_operator</color>
+    <color name="colorTextOnSpecial">@color/classic_text_on_special</color>
+    <color name="colorTextPrimary">@color/classic_text_primary</color>
+    <color name="colorTextSecondary">@color/classic_text_secondary</color>
+    <color name="ic_launcher_background">#FF9F0A</color>
+    <color name="midnight_background">#0D0D1A</color>
+    <color name="midnight_btn_number">#1A1A2E</color>
+    <color name="midnight_btn_operator">#7B61FF</color>
+    <color name="midnight_btn_special">#16213E</color>
+    <color name="midnight_display_bg">#0D0D1A</color>
+    <color name="midnight_ghost">#00000000</color>
+    <color name="midnight_text_on_number">#E8E8FF</color>
+    <color name="midnight_text_on_operator">#FFFFFF</color>
+    <color name="midnight_text_on_special">#A0A0C8</color>
+    <color name="midnight_text_primary">#E8E8FF</color>
+    <color name="midnight_text_secondary">#6B6B9B</color>
+    <color name="ocean_background">#0A1628</color>
+    <color name="ocean_btn_number">#112240</color>
+    <color name="ocean_btn_operator">#00B4D8</color>
+    <color name="ocean_btn_special">#0E1E38</color>
+    <color name="ocean_display_bg">#0A1628</color>
+    <color name="ocean_ghost">#00000000</color>
+    <color name="ocean_text_on_number">#CAF0F8</color>
+    <color name="ocean_text_on_operator">#0A1628</color>
+    <color name="ocean_text_on_special">#8BB8C8</color>
+    <color name="ocean_text_primary">#CAF0F8</color>
+    <color name="ocean_text_secondary">#5BA0B5</color>
+    <color name="panda_background">#F5F5F5</color>
+    <color name="panda_btn_number">#FFFFFF</color>
+    <color name="panda_btn_operator">#212121</color>
+    <color name="panda_btn_special">#E0E0E0</color>
+    <color name="panda_display_bg">#F5F5F5</color>
+    <color name="panda_ghost">#00000000</color>
+    <color name="panda_text_on_number">#212121</color>
+    <color name="panda_text_on_operator">#FFFFFF</color>
+    <color name="panda_text_on_special">#212121</color>
+    <color name="panda_text_primary">#212121</color>
+    <color name="panda_text_secondary">#757575</color>
+    <color name="rabbit_background">#FFF5E6</color>
+    <color name="rabbit_btn_number">#FFFFFF</color>
+    <color name="rabbit_btn_operator">#FF9800</color>
+    <color name="rabbit_btn_special">#FFE0B2</color>
+    <color name="rabbit_display_bg">#FFF5E6</color>
+    <color name="rabbit_ghost">#00000000</color>
+    <color name="rabbit_text_on_number">#5D4037</color>
+    <color name="rabbit_text_on_operator">#FFFFFF</color>
+    <color name="rabbit_text_on_special">#E65100</color>
+    <color name="rabbit_text_primary">#5D4037</color>
+    <color name="rabbit_text_secondary">#A1887F</color>
+    <color name="sunset_background">#1A0A0A</color>
+    <color name="sunset_btn_number">#2D1515</color>
+    <color name="sunset_btn_operator">#FF6B6B</color>
+    <color name="sunset_btn_special">#251010</color>
+    <color name="sunset_display_bg">#1A0A0A</color>
+    <color name="sunset_ghost">#00000000</color>
+    <color name="sunset_text_on_number">#FFD5C8</color>
+    <color name="sunset_text_on_operator">#FFFFFF</color>
+    <color name="sunset_text_on_special">#D09080</color>
+    <color name="sunset_text_primary">#FFD5C8</color>
+    <color name="sunset_text_secondary">#C08070</color>
+    <string name="ad_loading">Loading ad…</string>
+    <string name="ad_not_available">Ad not available. Try again later.</string>
+    <string name="app_name">Calculator</string>
+    <string name="buy_to_unlock">Buy for $0.99</string>
+    <string name="restore_purchase">Restore Purchase</string>
+    <string name="theme_classic">Classic</string>
+    <string name="theme_free">Free</string>
+    <string name="theme_midnight">Midnight</string>
+    <string name="theme_ocean">Ocean</string>
+    <string name="theme_picker_title">Themes</string>
+    <string name="theme_premium">Premium</string>
+    <string name="theme_sunset">Sunset</string>
+    <string name="unlock_theme">Unlock Theme</string>
+    <string name="watch_ad_to_unlock">Watch Ad</string>
+    <style name="Animation.Calculator.Slide" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+    <style name="Theme.Calculator" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:statusBarColor">@color/colorBackground</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <style name="Theme.Calculator.ThemePicker" parent="Theme.Calculator">
+        <item name="android:windowAnimationStyle">@style/Animation.Calculator.Slide</item>
+    </style>
+    <style name="ThemeOverlay.Calculator.Midnight" parent="">
+        <item name="android:colorBackground">@color/midnight_background</item>
+        <item name="colorBackground">@color/midnight_background</item>
+        <item name="colorBtnNumber">@color/midnight_btn_number</item>
+        <item name="colorBtnSpecial">@color/midnight_btn_special</item>
+        <item name="colorBtnOperator">@color/midnight_btn_operator</item>
+        <item name="colorTextPrimary">@color/midnight_text_primary</item>
+        <item name="colorTextSecondary">@color/midnight_text_secondary</item>
+        <item name="colorTextOnNumber">@color/midnight_text_on_number</item>
+        <item name="colorTextOnSpecial">@color/midnight_text_on_special</item>
+        <item name="colorTextOnOperator">@color/midnight_text_on_operator</item>
+    </style>
+    <style name="ThemeOverlay.Calculator.Ocean" parent="">
+        <item name="android:colorBackground">@color/ocean_background</item>
+        <item name="colorBackground">@color/ocean_background</item>
+        <item name="colorBtnNumber">@color/ocean_btn_number</item>
+        <item name="colorBtnSpecial">@color/ocean_btn_special</item>
+        <item name="colorBtnOperator">@color/ocean_btn_operator</item>
+        <item name="colorTextPrimary">@color/ocean_text_primary</item>
+        <item name="colorTextSecondary">@color/ocean_text_secondary</item>
+        <item name="colorTextOnNumber">@color/ocean_text_on_number</item>
+        <item name="colorTextOnSpecial">@color/ocean_text_on_special</item>
+        <item name="colorTextOnOperator">@color/ocean_text_on_operator</item>
+    </style>
+    <style name="ThemeOverlay.Calculator.Panda" parent="">
+        <item name="android:colorBackground">@color/panda_background</item>
+        <item name="colorBackground">@color/panda_background</item>
+        <item name="colorBtnNumber">@color/panda_btn_number</item>
+        <item name="colorBtnSpecial">@color/panda_btn_special</item>
+        <item name="colorBtnOperator">@color/panda_btn_operator</item>
+        <item name="colorTextPrimary">@color/panda_text_primary</item>
+        <item name="colorTextSecondary">@color/panda_text_secondary</item>
+        <item name="colorTextOnNumber">@color/panda_text_on_number</item>
+        <item name="colorTextOnSpecial">@color/panda_text_on_special</item>
+        <item name="colorTextOnOperator">@color/panda_text_on_operator</item>
+    </style>
+    <style name="ThemeOverlay.Calculator.Rabbit" parent="">
+        <item name="android:colorBackground">@color/rabbit_background</item>
+        <item name="colorBackground">@color/rabbit_background</item>
+        <item name="colorBtnNumber">@color/rabbit_btn_number</item>
+        <item name="colorBtnSpecial">@color/rabbit_btn_special</item>
+        <item name="colorBtnOperator">@color/rabbit_btn_operator</item>
+        <item name="colorTextPrimary">@color/rabbit_text_primary</item>
+        <item name="colorTextSecondary">@color/rabbit_text_secondary</item>
+        <item name="colorTextOnNumber">@color/rabbit_text_on_number</item>
+        <item name="colorTextOnSpecial">@color/rabbit_text_on_special</item>
+        <item name="colorTextOnOperator">@color/rabbit_text_on_operator</item>
+    </style>
+    <style name="ThemeOverlay.Calculator.Sunset" parent="">
+        <item name="android:colorBackground">@color/sunset_background</item>
+        <item name="colorBackground">@color/sunset_background</item>
+        <item name="colorBtnNumber">@color/sunset_btn_number</item>
+        <item name="colorBtnSpecial">@color/sunset_btn_special</item>
+        <item name="colorBtnOperator">@color/sunset_btn_operator</item>
+        <item name="colorTextPrimary">@color/sunset_text_primary</item>
+        <item name="colorTextSecondary">@color/sunset_text_secondary</item>
+        <item name="colorTextOnNumber">@color/sunset_text_on_number</item>
+        <item name="colorTextOnSpecial">@color/sunset_text_on_special</item>
+        <item name="colorTextOnOperator">@color/sunset_text_on_operator</item>
+    </style>
+    <style name="Widget.Calculator.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textSize">26sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="elevation">2dp</item>
+    </style>
+    <style name="Widget.Calculator.Button.Ghost">
+        <item name="backgroundTint">@color/colorGhost</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="elevation">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@color/colorBtnSpecial</item>
+    </style>
+    <style name="Widget.Calculator.Button.Number">
+        <item name="backgroundTint">@color/colorBtnNumber</item>
+        <item name="android:textColor">@color/colorTextOnNumber</item>
+    </style>
+    <style name="Widget.Calculator.Button.Operator">
+        <item name="backgroundTint">@color/colorBtnOperator</item>
+        <item name="android:textColor">@color/colorTextOnOperator</item>
+    </style>
+    <style name="Widget.Calculator.Button.Special">
+        <item name="backgroundTint">@color/colorBtnSpecial</item>
+        <item name="android:textColor">@color/colorTextOnSpecial</item>
+    </style>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBackground">#000000</color>
+    <color name="colorBtnNumber">#333333</color>
+    <color name="colorBtnOperator">#FF9F0A</color>
+    <color name="colorBtnSpecial">#636366</color>
+    <color name="colorGhost">#00000000</color>
+    <color name="colorTextOnNumber">#FFFFFF</color>
+    <color name="colorTextOnOperator">#FFFFFF</color>
+    <color name="colorTextOnSpecial">#FFFFFF</color>
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextSecondary">#EBEBF599</color>
+    <style name="Theme.Calculator" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:statusBarColor">@color/colorBackground</item>
+        <item name="android:navigationBarColor">@color/colorBackground</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
