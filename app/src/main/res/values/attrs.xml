@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorBackground" format="color" />
+    <attr name="colorBtnNumber" format="color" />
+    <attr name="colorBtnSpecial" format="color" />
+    <attr name="colorBtnOperator" format="color" />
+    <attr name="colorTextPrimary" format="color" />
+    <attr name="colorTextSecondary" format="color" />
+    <attr name="colorTextOnNumber" format="color" />
+    <attr name="colorTextOnSpecial" format="color" />
+    <attr name="colorTextOnOperator" format="color" />
+</resources>

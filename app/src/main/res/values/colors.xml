@@ -75,5 +75,6 @@
     <color name="colorTextOnSpecial">@color/classic_text_on_special</color>
     <color name="colorTextOnOperator">@color/classic_text_on_operator</color>
     <color name="colorGhost">@color/classic_ghost</color>
+    <color name="ic_launcher_background">#FF9F0A</color>
 
 </resources>
