@@ -7,17 +7,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.calculator.R
-import com.example.calculator.di.AppModule
 import com.example.calculator.model.ThemeId
 import com.example.calculator.model.toColors
-import com.example.calculator.viewmodel.ThemeViewModel
-import com.example.calculator.viewmodel.ThemeViewModelFactory
 
 class ThemeUnlockDialog : DialogFragment() {
-
-    private lateinit var themeViewModel: ThemeViewModel
 
     companion object {
         const val TAG = "ThemeUnlockDialog"
@@ -51,15 +45,6 @@ class ThemeUnlockDialog : DialogFragment() {
             arguments?.getString(ARG_THEME_ID) ?: ThemeId.CLASSIC.name
         )
 
-        themeViewModel = ViewModelProvider(
-            requireActivity(),
-            ThemeViewModelFactory(
-                AppModule.provideThemeRepository(requireContext()),
-                AppModule.provideBillingRepository(requireContext()),
-                AppModule.provideAdRepository(requireContext())
-            )
-        ).get(ThemeViewModel::class.java)
-
         view.findViewById<TextView>(R.id.tvDialogThemeName).text = themeId.displayName
 
         // Show theme colour preview
@@ -68,19 +53,21 @@ class ThemeUnlockDialog : DialogFragment() {
         view.findViewById<View>(R.id.previewBlockNumber).setBackgroundColor(colors.btnNumber)
         view.findViewById<View>(R.id.previewBlockOperator).setBackgroundColor(colors.btnOperator)
 
+        // Resolve listener from host activity (MainActivity implements ThemeUnlockListener).
+        val listener = requireActivity() as? ThemeUnlockListener
+
         view.findViewById<Button>(R.id.btnWatchAd).setOnClickListener {
-            themeViewModel.pendingUnlockTheme = themeId
-            themeViewModel.watchAdToUnlock(requireActivity())
+            listener?.onWatchAdRequested(themeId)
             dismiss()
         }
 
         view.findViewById<Button>(R.id.btnBuy).setOnClickListener {
-            themeViewModel.buyTheme(requireActivity(), themeId)
+            listener?.onPurchaseRequested(themeId)
             dismiss()
         }
 
         view.findViewById<TextView>(R.id.tvRestorePurchase).setOnClickListener {
-            // Purchases are restored automatically via BillingRepository.restorePurchases() on connect
+            // Purchases are restored automatically via BillingRepository.restorePurchases() on connect.
             dismiss()
         }
 

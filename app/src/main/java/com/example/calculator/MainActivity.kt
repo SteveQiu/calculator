@@ -1,9 +1,7 @@
 package com.example.calculator
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -11,14 +9,15 @@ import com.example.calculator.databinding.ActivityMainBinding
 import com.example.calculator.di.AppModule
 import com.example.calculator.model.ThemeId
 import com.example.calculator.model.toColors
-import com.example.calculator.ui.ThemePickerActivity
-import com.example.calculator.ui.ThemeUnlockDialog
+import com.example.calculator.ui.ThemePickerDialog
+import com.example.calculator.ui.ThemeUnlockListener
 import com.example.calculator.viewmodel.CalculatorViewModel
 import com.example.calculator.viewmodel.ThemeViewModel
 import com.example.calculator.viewmodel.ThemeViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ThemeUnlockListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -30,14 +29,6 @@ class MainActivity : AppCompatActivity() {
             AppModule.provideBillingRepository(this),
             AppModule.provideAdRepository(this)
         )
-    }
-
-    private val themePickerLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            recreate()
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         // override in values-night/colors.xml showing through before the coroutine runs.
         applyThemeColors(themeViewModel.activeTheme.value)
         observeTheme()
+        observeUiEvents()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -77,6 +69,35 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             themeViewModel.activeTheme.collect { themeId ->
                 applyThemeColors(themeId)
+            }
+        }
+    }
+
+    /** Observes ThemeViewModel events and surfaces them as Snackbars so the user gets feedback
+     *  whether the ad or billing flow succeeded or failed. */
+    private fun observeUiEvents() {
+        lifecycleScope.launch {
+            themeViewModel.uiEvents.collect { event ->
+                when (event) {
+                    is ThemeViewModel.UiEvent.ThemeUnlocked -> {
+                        Snackbar.make(
+                            binding.root,
+                            "${event.themeId.displayName} unlocked!",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    is ThemeViewModel.UiEvent.Error -> {
+                        Snackbar.make(binding.root, event.message, Snackbar.LENGTH_LONG).show()
+                    }
+                    ThemeViewModel.UiEvent.AdNotReady -> {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.ad_not_available),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    ThemeViewModel.UiEvent.PurchaseCancelled -> { /* no-op */ }
+                }
             }
         }
     }
@@ -148,23 +169,27 @@ class MainActivity : AppCompatActivity() {
         binding.btnEquals.setOnClickListener   { calcViewModel.onEquals();      updateDisplay() }
 
         binding.btnTheme.setOnClickListener {
-            // Simplified theme flow: Toggle to next theme or open unlock dialog for premium
-            val nextTheme = when(themeViewModel.activeTheme.value) {
-                ThemeId.CLASSIC -> ThemeId.MIDNIGHT
-                ThemeId.MIDNIGHT -> ThemeId.OCEAN
-                ThemeId.OCEAN -> ThemeId.SUNSET
-                ThemeId.SUNSET -> ThemeId.RABBIT
-                ThemeId.RABBIT -> ThemeId.PANDA
-                ThemeId.PANDA -> ThemeId.CLASSIC
-            }
-            
-            if (themeViewModel.isThemeUnlocked(nextTheme)) {
-                themeViewModel.selectTheme(nextTheme)
-            } else {
-                ThemeUnlockDialog.newInstance(nextTheme).show(supportFragmentManager, "unlock")
-            }
+            ThemePickerDialog.newInstance()
+                .show(supportFragmentManager, ThemePickerDialog.TAG)
         }
     }
+
+    // ── ThemeUnlockListener ──────────────────────────────────────────────
+    override fun onThemeSelected(themeId: ThemeId) {
+        themeViewModel.selectTheme(themeId)
+    }
+
+    override fun onWatchAdRequested(themeId: ThemeId) {
+        themeViewModel.pendingUnlockTheme = themeId
+        themeViewModel.watchAdToUnlock(this)
+    }
+
+    override fun onPurchaseRequested(themeId: ThemeId) {
+        themeViewModel.buyTheme(this, themeId)
+    }
+
+    override fun isThemeUnlocked(themeId: ThemeId): Boolean =
+        themeViewModel.isThemeUnlocked(themeId)
 
     private fun updateDisplay() {
         val state = calcViewModel.displayState

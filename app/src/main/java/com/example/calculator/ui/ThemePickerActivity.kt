@@ -103,6 +103,9 @@ class ThemeAdapter(
         val dotSpecial: View        = itemView.findViewById(R.id.dotSpecial)
         val dotNumber: View         = itemView.findViewById(R.id.dotNumber)
         val dotOperator: View       = itemView.findViewById(R.id.dotOperator)
+        // Inline unlock buttons — handled here by opening ThemeUnlockDialog
+        val btnCardWatchAd: View    = itemView.findViewById(R.id.btnCardWatchAd)
+        val btnCardBuy: View        = itemView.findViewById(R.id.btnCardBuy)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ThemeViewHolder {
@@ -117,7 +120,11 @@ class ThemeAdapter(
         val colors     = themeId.toColors(holder.itemView.context)
 
         holder.themeName.text = themeId.displayName
-        holder.badge.text     = if (themeId.isPremium) "Premium" else "Free"
+        holder.badge.text = when {
+            isActive          -> "✓ Active"
+            themeId.isPremium -> "Premium"
+            else              -> "Free"
+        }
         holder.lockOverlay.visibility = if (isUnlocked) View.GONE else View.VISIBLE
 
         holder.previewBg.setBackgroundColor(colors.background)
@@ -129,6 +136,18 @@ class ThemeAdapter(
         holder.card.strokeWidth = if (isActive) 6 else 0
 
         holder.card.setOnClickListener { onThemeClick(themeId) }
+
+        // Inline unlock buttons in the lock overlay — both open the full ThemeUnlockDialog
+        if (!isUnlocked) {
+            val fm = (holder.itemView.context as? androidx.appcompat.app.AppCompatActivity)
+                ?.supportFragmentManager
+            holder.btnCardWatchAd.setOnClickListener {
+                fm?.let { ThemeUnlockDialog.newInstance(themeId).show(it, ThemeUnlockDialog.TAG) }
+            }
+            holder.btnCardBuy.setOnClickListener {
+                fm?.let { ThemeUnlockDialog.newInstance(themeId).show(it, ThemeUnlockDialog.TAG) }
+            }
+        }
     }
 
     override fun getItemCount(): Int = themes.size

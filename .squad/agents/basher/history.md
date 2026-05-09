@@ -12,6 +12,30 @@
 
 _Appended by Basher after each session._
 
+## Session — 2026-05-09 — PANDA Theme Black Screen Fix
+
+### Work Done
+- Diagnosed root cause of PANDA (🐼) theme rendering completely black.
+- Fixed three files: `values-night/themes.xml`, `values-night/colors.xml`, `MainActivity.kt`.
+- Committed as `0c23fe7`.
+- Wrote decision to `.squad/decisions/inbox/basher-panda-theme-fix.md`.
+
+### Root Cause Found
+The black screen had **three contributing causes** (not one):
+1. `values-night/themes.xml` used `Theme.MaterialComponents.NoActionBar` (dark). The dark Material base applies internal color processing that interferes with `MaterialButton.backgroundTintList` for light themes.
+2. `values-night/colors.xml` had `colorBackground=#000000`. Layout inflated black in dark mode. `applyThemeColors()` is async (coroutine); any delay left the screen black.
+3. No synchronous color application in `onCreate` — colors only applied via the async flow, never on the first rendered frame.
+
+### Key Technical Learnings
+
+- **`values-night/` conflicts with programmatic theming**: When an app applies 100% of its colors programmatically (no `setTheme()`/`recreate()` pattern), dark-mode resource overrides in `values-night/colors.xml` create an antagonistic initial state. The async coroutine that overrides these values fires AFTER the first frame is drawn. Delete or neutralize `values-night/colors.xml` if you own all coloring.
+
+- **Dark MaterialComponents base theme conflicts with light programmatic tints**: `Theme.MaterialComponents.NoActionBar` (dark) applies surface/color overlays that can prevent `MaterialButton.backgroundTintList = ColorStateList.valueOf(lightColor)` from rendering correctly. Use `Theme.MaterialComponents.Light.NoActionBar` as base if you control all colors via code.
+
+- **Belt-and-suspenders: synchronous color apply in `onCreate`**: Call `applyThemeColors(themeViewModel.activeTheme.value)` synchronously after `setContentView`. The StateFlow initial value (`CLASSIC`) is always light and safe. This guarantees the first frame is never black, even before DataStore emits the saved theme.
+
+- **StateFlow initial value as safe fallback**: `stateIn(…, SharingStarted.Eagerly, ThemeId.CLASSIC)` means `.value` is always `CLASSIC` until DataStore loads. This makes synchronous access safe — applying CLASSIC colors briefly before PANDA arrives is an invisible transition.
+
 ## Session — 2026-05-08
 
 ### Work Done

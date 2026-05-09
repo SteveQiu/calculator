@@ -104,22 +104,54 @@
 
         </LinearLayout>
 
-        <!-- Lock overlay — visible only when theme is locked -->
-        <FrameLayout
+        <!-- Lock overlay — visible only when theme is locked.
+             Contains lock icon + inline unlock CTAs so the user can act without a separate dialog. -->
+        <LinearLayout
             android:id="@+id/lockOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#99000000"
+            android:background="#CC000000"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="8dp"
             android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="🔒"
-                android:textSize="32sp" />
+                android:textSize="22sp" />
 
-        </FrameLayout>
+            <!-- Watch Ad — free unlock -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCardWatchAd"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginTop="6dp"
+                android:text="@string/watch_ad_to_unlock"
+                android:textSize="10sp"
+                android:textColor="@android:color/white"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:strokeColor="@android:color/white"
+                app:strokeWidth="1dp"
+                app:cornerRadius="16dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <!-- Buy — paid unlock -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCardBuy"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/buy_to_unlock"
+                android:textSize="10sp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="16dp"
+                style="@style/Widget.Calculator.Button.Operator" />
+
+        </LinearLayout>
 
     </FrameLayout>
 
