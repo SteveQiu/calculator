@@ -12,6 +12,29 @@
 
 _Appended by Basher after each session._
 
+## Session — 2026-05-09 — Theme System Modularization + GLASS_ICE
+
+### Work Done
+- Created `Theme` data class with `id`, `displayName`, `isPremium`, `colors: (Context) → ThemeColors`, `iconRes`, `iconEmoji`, `skuId` — fully self-describing.
+- Created `ThemeRegistry` singleton (`Theme.kt`): `all: List<Theme>`, `forId(id): Theme`.
+- Added `GLASS_ICE` to `ThemeId` enum (`isPremium=true`, `skuId="theme_glass_ice"`).
+- Added `GLASS_ICE` case to `ThemeColors.toColors()`.
+- Added 11 `glass_ice_*` color resources to `colors.xml` (light ice blue palette, deep navy text).
+- Refactored `ThemePickerDialog`: adapter is now `List<Theme>` from `ThemeRegistry.all`; removed `iconResFor()` helper; all metadata (displayName, isPremium, colors, iconRes) read from `Theme`.
+- Refactored `MainActivity.applyThemeColors`: replaced `toColors()` + hardcoded `when(themeId)` icon block with `ThemeRegistry.forId(id).colors(ctx)` and `theme.iconEmoji`.
+- Build: **clean `assembleDebug` passes** (zero errors, pre-existing `@ColorInt` warnings only). Commit: `070fdd6`.
+- Decision: `.squad/decisions/inbox/basher-theme-modularization.md`.
+
+### Key Technical Learnings
+
+- **`(Context) -> ThemeColors` as field type**: Storing color factories as lambdas inside `Theme` defers context-dependent resolution without making Theme an abstract class. Callers use `theme.colors(context)` — natural, readable. This is the right pattern when you have context-dependent values in an otherwise pure data object.
+
+- **ThemeRegistry delegates to `toColors()` extension**: Rather than duplicating color-resource references in the registry, each `Theme` entry's lambda calls `themeId.toColors(ctx)`. This keeps `colors.xml` as the single source of truth and `toColors()` as the only builder — registry just adds metadata around it.
+
+- **When-block icon mapping is a smell**: The `when(themeId) { RABBIT -> "🐰" ... else -> "🌙" }` in `MainActivity` was a hidden coupling — adding a theme didn't cause a compile error if you forgot to update it. Moving `iconEmoji` to `Theme` and `ThemeRegistry` makes the omission visible at registration time.
+
+- **`ThemeId` enum redundancy is intentional for now**: `ThemeId.displayName`, `isPremium`, `skuId` remain on the enum for backward compat (tests, DataStore deserialization). The Registry carries the canonical truth; the enum carries the key. A future cleanup pass could strip ThemeId down to just the identifier — but that touches tests and DataStore code, so defer until needed.
+
 ## Session — 2026-05-09 — ThemeUnlockListener Wiring
 
 ### Work Done
