@@ -11,3 +11,27 @@
 ## Learnings
 
 _Appended by Linus after each session._
+
+### 2026-05-08 — First test suite (calculator logic + theme unlock)
+
+**Patterns tested:**
+- ViewModel-as-state-machine: each `onDigit`/`onOperator`/`onEquals` call advances state; test sequences model real button presses
+- `runTest` + `StandardTestDispatcher` + `advanceUntilIdle()` for deterministic coroutine testing of SharedFlow consumers
+- Mockito `whenever`/`verify`/`never()` for asserting BillingRepository and AdRepository interactions without real Android or network deps
+- Robolectric `ApplicationProvider.getApplicationContext()` for DataStore-backed repository tests without an emulator
+
+**Edge cases that matter most:**
+- Division by zero must return `"Error"`, not crash or produce `Infinity`
+- Double-tap decimal must be silently ignored (no `"3.."`)
+- Leading zero replacement: `"0" → digit` should discard the zero, not concat
+- Max input length (15): exceeding it must stop appending, not crash
+- `toggleSign` on zero: must stay `"0"`, not become `"-0"`
+- `delete` after `equals`: should reset to zero (result is not editable)
+- Percent-of-addend: `200 + 10%` should produce `20` (10% of base 200), not `0.1`
+- `BillingResult.ITEM_ALREADY_OWNED` is a restore-purchases path — must still unlock (gap, not yet tested)
+
+**Compilation status:**
+- `ThemeIdTest` ✅ compiles and passes (ThemeId model updated with isPremium/skuId/displayName)
+- `ThemeRepositoryTest` ✅ compiles; `isThemeUnlocked` tests pass; persistence tests (unlockTheme/setActiveTheme) will **fail** until DataStore stubs are replaced with real implementation
+- `CalculatorViewModelTest` ⏳ **TDD — will not compile** until CalculatorViewModel adds `displayValue`, `expressionText`, `displayState`, `onDigit`, `onOperator`, `onEquals`, `onDot`, `onPercent`, `onToggleSign`, `onClear`, `onDelete`
+- `ThemeViewModelTest` ⏳ **TDD — will not compile** until ThemeViewModel adds `selectTheme`, `watchAdToUnlock`, `uiEvents: SharedFlow<UiEvent>`, `pendingUnlockTheme`, and until BillingRepository/AdRepository expose `purchaseResults`/`adResults` flows and result sealed classes
