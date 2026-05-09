@@ -62,6 +62,36 @@
     <color name="sunset_display_bg">#1A0A0A</color>
 
     <!-- ═══════════════════════════════════════════════════
+         RABBIT THEME  (premium, carrot orange/white)
+         ═══════════════════════════════════════════════════ -->
+    <color name="rabbit_background">#FFF5E6</color>
+    <color name="rabbit_btn_number">#FFFFFF</color>
+    <color name="rabbit_btn_special">#FFE0B2</color>
+    <color name="rabbit_btn_operator">#FF9800</color>
+    <color name="rabbit_text_primary">#5D4037</color>
+    <color name="rabbit_text_secondary">#A1887F</color>
+    <color name="rabbit_text_on_number">#5D4037</color>
+    <color name="rabbit_text_on_special">#E65100</color>
+    <color name="rabbit_text_on_operator">#FFFFFF</color>
+    <color name="rabbit_ghost">#00000000</color>
+    <color name="rabbit_display_bg">#FFF5E6</color>
+
+    <!-- ═══════════════════════════════════════════════════
+         PANDA THEME  (premium, black & white)
+         ═══════════════════════════════════════════════════ -->
+    <color name="panda_background">#F5F5F5</color>
+    <color name="panda_btn_number">#FFFFFF</color>
+    <color name="panda_btn_special">#E0E0E0</color>
+    <color name="panda_btn_operator">#212121</color>
+    <color name="panda_text_primary">#212121</color>
+    <color name="panda_text_secondary">#757575</color>
+    <color name="panda_text_on_number">#212121</color>
+    <color name="panda_text_on_special">#212121</color>
+    <color name="panda_text_on_operator">#FFFFFF</color>
+    <color name="panda_ghost">#00000000</color>
+    <color name="panda_display_bg">#F5F5F5</color>
+
+    <!-- ═══════════════════════════════════════════════════
          BACKWARD-COMPAT ALIASES  → Classic colors
          (keeps existing layout/style references working)
          ═══════════════════════════════════════════════════ -->

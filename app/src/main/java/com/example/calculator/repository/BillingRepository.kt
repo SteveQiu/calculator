@@ -31,16 +31,20 @@ class BillingRepository(private val context: Context) : PurchasesUpdatedListener
     }
 
     private fun connectBillingClient() {
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(result: com.android.billingclient.api.BillingResult) {
-                if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                    scope.launch { restorePurchases() }
+        try {
+            billingClient.startConnection(object : BillingClientStateListener {
+                override fun onBillingSetupFinished(result: com.android.billingclient.api.BillingResult) {
+                    if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                        scope.launch { restorePurchases() }
+                    }
                 }
-            }
-            override fun onBillingServiceDisconnected() {
-                // Will retry on next purchase attempt
-            }
-        })
+                override fun onBillingServiceDisconnected() {
+                    // Will retry on next purchase attempt
+                }
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     suspend fun queryProductDetails(themeId: ThemeId): ProductDetails? {

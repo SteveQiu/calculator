@@ -26,8 +26,13 @@ class AdRepository(private val context: Context) {
     private var isLoading = false
 
     init {
-        MobileAds.initialize(context)
-        loadAd()
+        try {
+            MobileAds.initialize(context) {
+                loadAd()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun loadAd() {

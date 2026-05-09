@@ -12,6 +12,7 @@ import com.example.calculator.di.AppModule
 import com.example.calculator.model.ThemeId
 import com.example.calculator.model.toColors
 import com.example.calculator.ui.ThemePickerActivity
+import com.example.calculator.ui.ThemeUnlockDialog
 import com.example.calculator.viewmodel.CalculatorViewModel
 import com.example.calculator.viewmodel.ThemeViewModel
 import com.example.calculator.viewmodel.ThemeViewModelFactory
@@ -83,6 +84,17 @@ class MainActivity : AppCompatActivity() {
         binding.tvDisplay.setTextColor(colors.textPrimary)
         binding.tvExpression.setTextColor(colors.textSecondary)
 
+        // Update Theme Button Icon based on theme
+        val themeIcon = when(themeId) {
+            ThemeId.RABBIT -> "🐰"
+            ThemeId.PANDA -> "🐼"
+            ThemeId.MIDNIGHT -> "🌙"
+            ThemeId.OCEAN -> "🌊"
+            ThemeId.SUNSET -> "🌇"
+            else -> "🌙"
+        }
+        binding.btnTheme.text = themeIcon
+
         val numberTint   = ColorStateList.valueOf(colors.btnNumber)
         val specialTint  = ColorStateList.valueOf(colors.btnSpecial)
         val operatorTint = ColorStateList.valueOf(colors.btnOperator)
@@ -122,7 +134,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnDot.setOnClickListener      { calcViewModel.onDot();        updateDisplay() }
         binding.btnClear.setOnClickListener    { calcViewModel.onClear();       updateDisplay() }
-        binding.btnDelete.setOnClickListener   { calcViewModel.onDelete();      updateDisplay() }
+        binding.btnDeleteRow.setOnClickListener { calcViewModel.onDelete();      updateDisplay() }
         binding.btnToggleSign.setOnClickListener { calcViewModel.onToggleSign(); updateDisplay() }
         binding.btnPercent.setOnClickListener  { calcViewModel.onPercent();     updateDisplay() }
         binding.btnAdd.setOnClickListener      { calcViewModel.onOperator("+"); updateDisplay() }
@@ -132,7 +144,21 @@ class MainActivity : AppCompatActivity() {
         binding.btnEquals.setOnClickListener   { calcViewModel.onEquals();      updateDisplay() }
 
         binding.btnTheme.setOnClickListener {
-            themePickerLauncher.launch(Intent(this, ThemePickerActivity::class.java))
+            // Simplified theme flow: Toggle to next theme or open unlock dialog for premium
+            val nextTheme = when(themeViewModel.activeTheme.value) {
+                ThemeId.CLASSIC -> ThemeId.MIDNIGHT
+                ThemeId.MIDNIGHT -> ThemeId.OCEAN
+                ThemeId.OCEAN -> ThemeId.SUNSET
+                ThemeId.SUNSET -> ThemeId.RABBIT
+                ThemeId.RABBIT -> ThemeId.PANDA
+                ThemeId.PANDA -> ThemeId.CLASSIC
+            }
+            
+            if (themeViewModel.isThemeUnlocked(nextTheme)) {
+                themeViewModel.selectTheme(nextTheme)
+            } else {
+                ThemeUnlockDialog.newInstance(nextTheme).show(supportFragmentManager, "unlock")
+            }
         }
     }
 

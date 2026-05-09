@@ -62,4 +62,26 @@ fun ThemeId.toColors(context: Context): ThemeColors = when (this) {
         textOnSpecial  = ContextCompat.getColor(context, R.color.sunset_text_on_special),
         textOnOperator = ContextCompat.getColor(context, R.color.sunset_text_on_operator)
     )
+    ThemeId.RABBIT -> ThemeColors(
+        background     = ContextCompat.getColor(context, R.color.rabbit_background),
+        btnNumber      = ContextCompat.getColor(context, R.color.rabbit_btn_number),
+        btnSpecial     = ContextCompat.getColor(context, R.color.rabbit_btn_special),
+        btnOperator    = ContextCompat.getColor(context, R.color.rabbit_btn_operator),
+        textPrimary    = ContextCompat.getColor(context, R.color.rabbit_text_primary),
+        textSecondary  = ContextCompat.getColor(context, R.color.rabbit_text_secondary),
+        textOnNumber   = ContextCompat.getColor(context, R.color.rabbit_text_on_number),
+        textOnSpecial  = ContextCompat.getColor(context, R.color.rabbit_text_on_special),
+        textOnOperator = ContextCompat.getColor(context, R.color.rabbit_text_on_operator)
+    )
+    ThemeId.PANDA -> ThemeColors(
+        background     = ContextCompat.getColor(context, R.color.panda_background),
+        btnNumber      = ContextCompat.getColor(context, R.color.panda_btn_number),
+        btnSpecial     = ContextCompat.getColor(context, R.color.panda_btn_special),
+        btnOperator    = ContextCompat.getColor(context, R.color.panda_btn_operator),
+        textPrimary    = ContextCompat.getColor(context, R.color.panda_text_primary),
+        textSecondary  = ContextCompat.getColor(context, R.color.panda_text_secondary),
+        textOnNumber   = ContextCompat.getColor(context, R.color.panda_text_on_number),
+        textOnSpecial  = ContextCompat.getColor(context, R.color.panda_text_on_special),
+        textOnOperator = ContextCompat.getColor(context, R.color.panda_text_on_operator)
+    )
 }
