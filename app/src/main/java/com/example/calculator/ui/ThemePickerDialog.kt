@@ -135,9 +135,10 @@ class ThemePickerDialog : BottomSheetDialogFragment() {
             holder.name.text = themeId.displayName
             holder.nameOverlay.text = themeId.displayName
             holder.badge.text = when {
-                isActive          -> "✓ Active"
-                themeId.isPremium -> "Premium"
-                else              -> "Free"
+                isActive               -> "✓ Active"
+                !themeId.isPremium     -> "Free"
+                isUnlocked             -> "✓ Owned"   // premium + purchased/unlocked
+                else                   -> "Premium"   // premium + locked
             }
 
             holder.previewBg.setBackgroundColor(colors.background)

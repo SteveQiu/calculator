@@ -23,8 +23,10 @@ class ThemeRepository(private val context: Context) {
     }
 
     val unlockedThemesFlow: Flow<Set<ThemeId>> = context.dataStore.data.map { prefs ->
-        val names = prefs[KEY_UNLOCKED_THEMES] ?: setOf(ThemeId.CLASSIC.name)
-        ThemeId.entries.filter { it.name in names }.toSet()
+        val names = prefs[KEY_UNLOCKED_THEMES] ?: emptySet()
+        // Only premium themes are tracked as "unlocked"; free themes (isPremium=false)
+        // are always accessible via the !isPremium short-circuit in isThemeUnlocked().
+        ThemeId.entries.filter { it.isPremium && it.name in names }.toSet()
     }
 
     suspend fun setActiveTheme(themeId: ThemeId) {

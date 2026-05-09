@@ -20,7 +20,7 @@ class ThemeViewModel(
         .stateIn(viewModelScope, SharingStarted.Eagerly, ThemeId.CLASSIC)
 
     val unlockedThemes: StateFlow<Set<ThemeId>> = themeRepository.unlockedThemesFlow
-        .stateIn(viewModelScope, SharingStarted.Eagerly, setOf(ThemeId.CLASSIC))
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptySet())
 
     sealed class UiEvent {
         data class ThemeUnlocked(val themeId: ThemeId) : UiEvent()

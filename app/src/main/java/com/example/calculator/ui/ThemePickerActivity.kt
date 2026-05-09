@@ -123,9 +123,10 @@ class ThemeAdapter(
         holder.themeName.text = themeId.displayName
         holder.themeNameOverlay.text = themeId.displayName
         holder.badge.text = when {
-            isActive          -> "✓ Active"
-            themeId.isPremium -> "Premium"
-            else              -> "Free"
+            isActive               -> "✓ Active"
+            !themeId.isPremium     -> "Free"
+            isUnlocked             -> "✓ Owned"   // premium + purchased/unlocked
+            else                   -> "Premium"   // premium + locked
         }
         holder.lockOverlay.visibility = if (isUnlocked) View.GONE else View.VISIBLE
 
