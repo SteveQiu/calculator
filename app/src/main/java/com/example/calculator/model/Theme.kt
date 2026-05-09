@@ -1,6 +1,7 @@
 package com.example.calculator.model
 
 import android.content.Context
+import com.example.calculator.R
 
 /**
  * Self-describing theme definition. Every piece of theme metadata lives here.
@@ -80,6 +81,7 @@ object ThemeRegistry {
             displayName = "Glass Ice",
             isPremium   = true,
             colors      = { ctx -> ThemeId.GLASS_ICE.toColors(ctx) },
+            iconRes     = R.drawable.ic_theme_glass_ice,
             iconEmoji   = "❄️",
             skuId       = "theme_glass_ice"
         )
