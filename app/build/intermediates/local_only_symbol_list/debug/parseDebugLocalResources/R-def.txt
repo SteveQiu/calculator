@@ -103,8 +103,11 @@ id btn9
 id btnAdd
 id btnBack
 id btnBuy
+id btnCardBuy
+id btnCardWatchAd
 id btnClear
 id btnClose
+id btnClosePicker
 id btnDeleteRow
 id btnDivide
 id btnDot
@@ -126,6 +129,7 @@ id previewBlockNumber
 id previewBlockOperator
 id previewBlockSpecial
 id rvThemes
+id rvThemesPicker
 id themePreviewContainer
 id tvBadge
 id tvDialogThemeName
@@ -135,6 +139,7 @@ id tvRestorePurchase
 id tvThemeName
 layout activity_main
 layout activity_theme_picker
+layout dialog_theme_picker
 layout dialog_theme_unlock
 layout item_theme_card
 mipmap ic_launcher

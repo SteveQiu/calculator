@@ -29,7 +29,16 @@ _Appended by Rusty after each session._
 - **Material Design integration:** `MaterialCardView` with runtime stroke coloring (via Basher's `backgroundTintList` approach) works perfectly for active theme highlight. No Material components broken by theme switching.
 - **Insight:** Prefixed color naming in a single `colors.xml` beats per-theme resource directories for simplicity and maintainability. Future themes add ~15 colors + 1 overlay style + 1 adapter entry — mechanical work, zero risk.
 
-### 2026-05-09 — Emulator Visual Inspection 🐛 CRITICAL BUG FOUND
+### 2026-05-09 — ThemePickerBottomSheet implemented
+
+- **BottomSheet over Activity:** Replaced the cycling `btnTheme` click handler with `ThemePickerBottomSheet` (a `BottomSheetDialogFragment`). This eliminates the need for `ActivityResultLauncher` and avoids a full-screen navigation break for a quick theme swap.
+- **ThemeUnlockListener interface:** Defined the clean 3-method interface (`onThemeSelected`, `onWatchAdRequested`, `onPurchaseRequested`). `MainActivity` implements it and delegates to `ThemeViewModel` — keeps the fragment decoupled from billing/ad logic entirely.
+- **Inline unlock CTAs in card:** Updated `item_theme_card.xml` to replace the simple lock-icon `FrameLayout` overlay with a `LinearLayout` containing 🔒 emoji + "Watch Ad" (outlined button) + "Buy for $0.99" (operator-styled button). Users see unlock options without navigating to a separate dialog.
+- **`activityViewModels` in fragment:** `ThemePickerBottomSheet` uses `activityViewModels { ThemeViewModelFactory(...) }` to share the same `ThemeViewModel` instance already live in `MainActivity` — no double-initialization.
+- **Expand on show:** Set `BottomSheetBehavior.STATE_EXPANDED + skipCollapsed = true` so all 6 cards are visible immediately; no half-peek state.
+- **Active badge:** Changed `tvBadge` text from "Free"/"Premium" to "✓ Active" when the theme matches the current active theme — gives clear visual confirmation alongside the colored stroke ring.
+- **`ThemePickerActivity` preserved:** The existing activity-based picker is still present and updated to handle the new `btnCardWatchAd`/`btnCardBuy` IDs (routes to `ThemeUnlockDialog`). Can be deprecated in a future cleanup pass.
+
 
 **Inspection Results:**
 - **Device:** emulator-5554 connected and responsive

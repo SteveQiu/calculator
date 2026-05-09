@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.calculator.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -20,6 +21,12 @@ import java.lang.String;
 public final class ItemThemeCardBinding implements ViewBinding {
   @NonNull
   private final MaterialCardView rootView;
+
+  @NonNull
+  public final MaterialButton btnCardBuy;
+
+  @NonNull
+  public final MaterialButton btnCardWatchAd;
 
   @NonNull
   public final MaterialCardView cardRoot;
@@ -34,7 +41,7 @@ public final class ItemThemeCardBinding implements ViewBinding {
   public final View dotSpecial;
 
   @NonNull
-  public final FrameLayout lockOverlay;
+  public final LinearLayout lockOverlay;
 
   @NonNull
   public final LinearLayout paletteRow;
@@ -49,10 +56,13 @@ public final class ItemThemeCardBinding implements ViewBinding {
   public final TextView tvThemeName;
 
   private ItemThemeCardBinding(@NonNull MaterialCardView rootView,
+      @NonNull MaterialButton btnCardBuy, @NonNull MaterialButton btnCardWatchAd,
       @NonNull MaterialCardView cardRoot, @NonNull View dotNumber, @NonNull View dotOperator,
-      @NonNull View dotSpecial, @NonNull FrameLayout lockOverlay, @NonNull LinearLayout paletteRow,
+      @NonNull View dotSpecial, @NonNull LinearLayout lockOverlay, @NonNull LinearLayout paletteRow,
       @NonNull FrameLayout previewBg, @NonNull TextView tvBadge, @NonNull TextView tvThemeName) {
     this.rootView = rootView;
+    this.btnCardBuy = btnCardBuy;
+    this.btnCardWatchAd = btnCardWatchAd;
     this.cardRoot = cardRoot;
     this.dotNumber = dotNumber;
     this.dotOperator = dotOperator;
@@ -91,6 +101,18 @@ public final class ItemThemeCardBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnCardBuy;
+      MaterialButton btnCardBuy = ViewBindings.findChildViewById(rootView, id);
+      if (btnCardBuy == null) {
+        break missingId;
+      }
+
+      id = R.id.btnCardWatchAd;
+      MaterialButton btnCardWatchAd = ViewBindings.findChildViewById(rootView, id);
+      if (btnCardWatchAd == null) {
+        break missingId;
+      }
+
       MaterialCardView cardRoot = (MaterialCardView) rootView;
 
       id = R.id.dotNumber;
@@ -112,7 +134,7 @@ public final class ItemThemeCardBinding implements ViewBinding {
       }
 
       id = R.id.lockOverlay;
-      FrameLayout lockOverlay = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout lockOverlay = ViewBindings.findChildViewById(rootView, id);
       if (lockOverlay == null) {
         break missingId;
       }
@@ -141,8 +163,9 @@ public final class ItemThemeCardBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ItemThemeCardBinding((MaterialCardView) rootView, cardRoot, dotNumber, dotOperator,
-          dotSpecial, lockOverlay, paletteRow, previewBg, tvBadge, tvThemeName);
+      return new ItemThemeCardBinding((MaterialCardView) rootView, btnCardBuy, btnCardWatchAd,
+          cardRoot, dotNumber, dotOperator, dotSpecial, lockOverlay, paletteRow, previewBg, tvBadge,
+          tvThemeName);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

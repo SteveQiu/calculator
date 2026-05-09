@@ -12,6 +12,46 @@
 
 _Appended by Basher after each session._
 
+## Session — 2026-05-09 — ThemeUnlockListener Wiring
+
+### Work Done
+- Added `isThemeUnlocked(themeId)` to `ThemeUnlockListener` interface (was missing from Rusty's stub).
+- Created **`ThemePickerDialog`** (`BottomSheetDialogFragment`): shows 2-column theme grid using a
+  private `PickerAdapter`; unlocked theme taps call `listener.onThemeSelected`; locked taps open
+  `ThemeUnlockDialog` via `parentFragmentManager`.
+- Updated **`ThemeUnlockDialog`**: removed `ThemeViewModel` dependency entirely; "Watch Ad" and
+  "Buy" now call `listener.onWatchAdRequested` / `listener.onPurchaseRequested` resolved via
+  `requireActivity() as? ThemeUnlockListener`.
+- Updated **`MainActivity`**: added `isThemeUnlocked` override (was absent), wired `observeUiEvents()`
+  for Snackbar feedback (ThemeUnlocked, Error, AdNotReady), replaced cycling `btnTheme` click with
+  `ThemePickerDialog.newInstance().show(...)`.
+- Created decision file: `.squad/decisions/inbox/basher-theme-unlock-wiring.md`.
+
+### Key Technical Learnings
+
+- **DialogFragment → host via `requireActivity() as? Interface`**: The standard Android pattern for
+  DialogFragment callbacks. Both `ThemePickerDialog` and `ThemeUnlockDialog` use this — no constructor
+  injection, no `setTargetFragment` (deprecated), no shared ViewModel needed inside the dialog.
+  `requireActivity()` always returns the same `MainActivity` regardless of how deeply dialogs nest.
+
+- **`BottomSheetDialogFragment` for pickers**: `dialog_theme_picker.xml` uses `wrap_content` height
+  with a drag handle — standard Material bottom sheet anatomy. No need to override `onStart` to
+  force dimensions; the BottomSheetDialogFragment handles this automatically via the Material theme.
+
+- **`parentFragmentManager` vs `childFragmentManager` in dialogs**: When showing a secondary dialog
+  from inside a BottomSheetDialogFragment, use `parentFragmentManager` so it's attached to the
+  Activity's back-stack, not the parent dialog's child manager (which would be destroyed with it).
+
+- **`pendingUnlockTheme` pattern is the correct ad-theme bridge**: `AdRepository.showAd()` calls a
+  generic `RewardItem` callback with no theme context. Setting `themeViewModel.pendingUnlockTheme`
+  before calling `watchAdToUnlock` is the correct disambiguation — the ad reward observer picks it
+  up. The listener interface enforces that `onWatchAdRequested` is always the call site where the
+  theme context is set (in `MainActivity`), keeping it out of the dialog.
+
+- **Snackbar requires a root view anchor**: Use `binding.root` as the anchor. Avoid `window.decorView`
+  (overlaps system UI) or individual buttons (wrong position). `binding.root` is the calculator grid
+  layout — perfect anchor.
+
 ## Session — 2026-05-09 — PANDA Theme Black Screen Fix
 
 ### Work Done
