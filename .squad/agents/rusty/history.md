@@ -62,6 +62,34 @@ _Appended by Rusty after each session._
 
 **Recommendation:** Investigate `ThemeManager` or `MainActivity.applyTheme()` — the overlay may be set but views are not refreshing their tints/backgroundTint from the new context.
 
+## Session — 2026-05-09 — Scribe: Cross-Agent Documentation & Archive
+
+### Work Done (Scribe)
+- Compiled all agent outputs (Rusty-1: ThemePickerDialog, Rusty-2: Visual Inspection, Basher-1: Unlock Wiring)
+- Merged 5 decision files from inbox into unified `.squad/decisions/decisions.md`
+- Created 3 orchestration logs documenting each agent's session work
+- Created comprehensive session log with architecture validation and risk assessment
+- Updated cross-agent history in Basher and Rusty entries
+- Cleaned up 5 inbox decision files after archival
+
+### Inspection Results Summary
+- **Black screen issue:** RESOLVED (Basher's fix in commit 0c23fe7)
+- **ThemePickerDialog:** Working correctly with 2-column grid
+- **Theme switching:** Instant, no activity recreation needed
+- **Bug triage:** 3 issues documented (1 layout, 1 state, 1 cosmetic)
+
+### Outstanding Bugs for Team
+- **Bug 1 (Major):** Locked theme cards hiding theme names — UX blocker
+- **Bug 2 (Major):** PANDA theme inconsistent state (Premium badge but no lock) — confusing
+- **Bug 3 (Minor):** Display text size/positioning — polish only
+
+### Positive Findings
+✅ Color swatches render correctly  
+✅ Active badge functional with purple highlight  
+✅ All buttons respond to taps  
+✅ Theme switching works instantly  
+✅ Bottom sheet drag handle and close functional
+
 ### 2026-05-09 — Visual Inspection #2 (Post-Fix)
 
 **Good news:** The black screen issue from earlier inspection is RESOLVED. Calculator now renders correctly with the Midnight theme active.

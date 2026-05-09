@@ -108,3 +108,23 @@ The black screen had **three contributing causes** (not one):
 - **SharedFlow architecture** is testable: Linus's TDD test cases (8 for ThemeViewModel) outline the exact APIs needed. Once `BillingRepository.purchaseResults` and `AdRepository.adResults` are wired, those tests will compile and drive development.
 - **No API mismatches:** Every contract Linus wrote maps to an existing implementation. The system is cohesive.
 - **Next action:** Wire real DataStore persistence in `ThemeRepository.unlockTheme()` and `setActiveTheme()` to flip 3 red tests green.
+
+## Session — 2026-05-09 — Scribe: Decision Archive & Cross-Agent Log
+
+### Work Done (Scribe)
+- Merged 5 decision files from inbox into single `.squad/decisions/decisions.md` (7029 bytes)
+- Created 3 orchestration logs documenting agent work this session
+- Created session log `.squad/log/20260509T075626-theme-picker-inspection.md`
+- Cleaned up 5 inbox files
+- Appended cross-agent updates to Basher and Rusty history
+
+### Decisions Archived
+1. PANDA Black Screen Fix (root causes + solution) — **Status:** Implemented, commit 0c23fe7
+2. ThemeUnlockListener Wiring (ad/billing integration) — **Status:** Implemented
+3. Theme Picker BottomSheet UI (architecture + listener pattern) — **Status:** Implemented
+4. Visual Inspection Bugs (3 findings, recommendations) — **Status:** Open
+
+### Outstanding Bugs Documented
+- **Bug 1 (Major):** Locked theme names hidden by overlay — fix `item_theme_card.xml`
+- **Bug 2 (Major):** PANDA theme lock state inconsistent — verify UnlockStatusManager
+- **Bug 3 (Minor):** Display text size/position — polish cosmetic
