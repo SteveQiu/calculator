@@ -171,3 +171,26 @@ The black screen had **three contributing causes** (not one):
 - **Bug 1 (Major):** Locked theme names hidden by overlay — fix `item_theme_card.xml`
 - **Bug 2 (Major):** PANDA theme lock state inconsistent — verify UnlockStatusManager
 - **Bug 3 (Minor):** Display text size/position — polish cosmetic
+
+## Session — 2026-05-09 — Bug 2: Panda Lock/Badge Behavior (basher-2)
+
+### Work Done
+- **Diagnosed and fixed** the "Panda shows Premium badge but no lock overlay" bug.
+- Root cause: Badge logic not distinguishing locked vs owned states; `unlockedThemesFlow` incorrectly persisting free themes (CLASSIC).
+- **Changes:**
+  - `ThemePickerDialog.kt`: Badge `isPremium -> "Premium"` → `isUnlocked -> "✓ Owned"` / `else -> "Premium"`
+  - `ThemePickerActivity.kt`: Applied same badge fix in `ThemeAdapter.onBindViewHolder`
+  - `ThemeRepository.kt`: `unlockedThemesFlow` filter: `it.name in names` → `it.isPremium && it.name in names`
+  - `ThemeViewModel.kt`: StateFlow initial value: `setOf(ThemeId.CLASSIC)` → `emptySet()`
+
+### Key Technical Learnings
+- **Two-axis state (isPremium × isUnlocked)** requires four badge variants, not two. Badge text must reflect both dimensions to avoid impossible states like "Premium with no lock".
+- **DataStore unlocked set should filter for premium themes only**. Free themes are always accessible via `!isPremium` in `isThemeUnlocked()`. Storing them creates semantic noise.
+- **StateFlow initial value must match the filtered flow semantics**. If `unlockedThemesFlow` only emits premium themes, initial value should be `emptySet()`, not `setOf(ThemeId.CLASSIC)`.
+
+### Results
+✓ Locked premium themes (PANDA, RABBIT, etc.) show "Premium" badge + lock overlay + CTAs
+✓ Unlocked premium themes show "✓ Owned" badge with no lock
+✓ Free themes (CLASSIC) correctly excluded from unlock persistence
+✓ Badge state consistent across all themes
+✓ Commit: `de2f771`

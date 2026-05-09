@@ -109,3 +109,29 @@ _Appended by Rusty after each session._
 **Learnings:**
 - Overlay layouts that cover sibling views need careful bounds management. Either exclude certain areas from the overlay, or duplicate the content inside it.
 - Unlock state and badge text should be derived from the same source of truth to avoid drift.
+
+### 2026-05-09 — Bug Fixes: Locked Card Names + Display Text Size
+
+**Bug 1 fixed (item_theme_card.xml + adapters):**
+- Added `tvThemeNameOverlay` TextView inside `lockOverlay` with `textColor="@android:color/white"` so the theme name is visible over the dark overlay.
+- Both `ThemePickerDialog.ThemeCardAdapter` and `ThemePickerActivity.ThemeAdapter` now bind `nameOverlay.text` / `themeNameOverlay.text` alongside `name.text` in `onBindViewHolder`.
+- Users can now read the theme name even when the lock overlay is fully opaque.
+
+**Bug 3 fixed (activity_main.xml):**
+- Removed `app:autoSizeTextType="uniform"` and related attributes from `tvDisplay` — auto-size fought `wrap_content` height, keeping text at ~32sp minimum.
+- Set explicit `android:textSize="64sp"` for a prominent calculator display number.
+- Changed `gravity` from `end` to `bottom|end`.
+- Added `paddingBottom="8dp"` and `paddingEnd="16dp"` for breathing room.
+
+**Build:** `assembleDebug` — **BUILD SUCCESSFUL** (commit `ddf3ca3`).
+
+## Session — 2026-05-09 — Bug Fixes: Locked Card Names + Display Text Size (rusty-3)
+
+### Work Done
+- **Bug 1 (Locked theme cards hide theme names):** Added `tvThemeNameOverlay` TextView inside `lockOverlay` in `item_theme_card.xml` with `textColor="@android:color/white"`. Updated both `ThemePickerDialog.ThemeCardAdapter` and `ThemePickerActivity.ThemeAdapter` to bind the overlay text alongside the base card text.
+- **Bug 3 (Display text size):** Removed `app:autoSizeTextType="uniform"` from `tvDisplay` in `activity_main.xml`. Set explicit `android:textSize="64sp"`, changed `gravity` to `bottom|end`, added `paddingBottom="8dp"` and `paddingEnd="16dp"`.
+
+### Results
+✓ Theme names now visible on locked premium cards
+✓ Display number renders at 64sp with proper bottom-right alignment
+✓ Build: `assembleDebug` — **BUILD SUCCESSFUL** (commit `ddf3ca3`)
