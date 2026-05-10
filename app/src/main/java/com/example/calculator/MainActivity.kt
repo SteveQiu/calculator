@@ -1,9 +1,11 @@
 package com.example.calculator
 
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.calculator.databinding.ActivityMainBinding
 import com.example.calculator.di.AppModule
@@ -137,6 +139,17 @@ class MainActivity : AppCompatActivity(), ThemeUnlockListener {
             btn.backgroundTintList = operatorTint
             btn.setTextColor(colors.textOnOperator)
         }
+
+        // Apply theme-specific font to the display and number buttons.
+        val typeface = theme.fontResId?.let { ResourcesCompat.getFont(this, it) }
+            ?: Typeface.DEFAULT
+        binding.tvDisplay.typeface = typeface
+        binding.tvExpression.typeface = typeface
+        listOf(
+            binding.btn0, binding.btn1, binding.btn2, binding.btn3, binding.btn4,
+            binding.btn5, binding.btn6, binding.btn7, binding.btn8, binding.btn9,
+            binding.btnDot
+        ).forEach { btn -> btn.typeface = typeface }
     }
 
     private fun setupButtons() {

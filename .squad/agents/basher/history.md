@@ -19,6 +19,25 @@
 
 See `.squad/decisions/decisions.md` for full decision records and architectural notes.
 
+## Session — 2026-05-09 — Per-Theme Font Support (`fontResId`)
+
+### Work Done
+- Added `fontResId: Int? = null` to the `Theme` data class in `model/Theme.kt`.
+- All themes in `ThemeRegistry.all` left at default `null` except Rabbit and Panda, which have `fontResId = null` with an explicit comment for Rusty to fill in once font files land in `res/font/`.
+- Updated `MainActivity.applyThemeColors()`: resolves typeface via `ResourcesCompat.getFont(this, theme.fontResId!!)` (null-safe) and applies it to `tvDisplay` and all number/dot buttons. Falls back to `Typeface.DEFAULT` when `fontResId` is null.
+- Added imports: `android.graphics.Typeface`, `androidx.core.content.res.ResourcesCompat`.
+- Wrote decision to `.squad/decisions/inbox/basher-theme-font-field.md`.
+
+### Key Technical Learnings
+
+- **`fontResId: Int? = null` is the Android nullable-resource pattern**: Same convention as `iconRes: Int?` already in `Theme`. Using null as "use default" and non-null as a `@FontRes` integer keeps the API simple and avoids a sealed-class hierarchy for what is essentially a tri-state (null / R.font.x).
+
+- **`ResourcesCompat.getFont()` can return null**: Even if the resource ID is valid, the font may fail to inflate (malformed XML, missing file in release builds). The `?.let { } ?: Typeface.DEFAULT` guard handles this gracefully without a crash.
+
+- **Apply font on every `applyThemeColors()` call, not just theme changes**: Font application is inside `applyThemeColors`, which is called on every theme switch. This ensures font resets to DEFAULT when switching away from Rabbit/Panda, not just when switching to them.
+
+- **Leave font fields null when font file doesn't exist yet**: Referencing `R.font.fredoka_one` before `res/font/fredoka_one.xml` exists will cause a compile error. Keep as `null` with a comment until the asset is in place — one-line activation once Rusty adds the file.
+
 ## Session — 2026-05-09 — Theme System Modularization + GLASS_ICE
 
 ### Work Done

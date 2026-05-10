@@ -17,7 +17,10 @@ data class Theme(
     val colors: (Context) -> ThemeColors,
     val iconRes: Int? = null,
     val iconEmoji: String? = null,
-    val skuId: String? = null
+    val skuId: String? = null,
+    /** Font resource ID for the calculator display and number buttons (e.g. R.font.fredoka_one).
+     *  null = use the system default typeface. */
+    val fontResId: Int? = null
 )
 
 /**
@@ -66,7 +69,8 @@ object ThemeRegistry {
             isPremium   = true,
             colors      = { ctx -> ThemeId.RABBIT.toColors(ctx) },
             iconEmoji   = "🐰",
-            skuId       = "theme_rabbit"
+            skuId       = "theme_rabbit",
+            fontResId   = null  // Rusty will set once res/font/ file is added
         ),
         Theme(
             id          = ThemeId.PANDA,
@@ -74,7 +78,8 @@ object ThemeRegistry {
             isPremium   = true,
             colors      = { ctx -> ThemeId.PANDA.toColors(ctx) },
             iconEmoji   = "🐼",
-            skuId       = "theme_panda"
+            skuId       = "theme_panda",
+            fontResId   = null  // Rusty will set once res/font/ file is added
         ),
         Theme(
             id          = ThemeId.GLASS_ICE,
