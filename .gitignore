@@ -1,3 +1,22 @@
+# Android build artifacts — never commit compiled outputs
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build/
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# App build artifacts
+app/build/
+
+# Kotlin incremental compilation caches
+**/*.class
+**/*.dex
+
 # Squad: ignore runtime state (logs, inbox, sessions)
 .squad/orchestration-log/
 .squad/log/
