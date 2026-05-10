@@ -70,7 +70,7 @@ object ThemeRegistry {
             colors      = { ctx -> ThemeId.RABBIT.toColors(ctx) },
             iconEmoji   = "🐰",
             skuId       = "theme_rabbit",
-            fontResId   = null  // Rusty will set once res/font/ file is added
+            fontResId   = R.font.fredoka_one
         ),
         Theme(
             id          = ThemeId.PANDA,
@@ -79,7 +79,7 @@ object ThemeRegistry {
             colors      = { ctx -> ThemeId.PANDA.toColors(ctx) },
             iconEmoji   = "🐼",
             skuId       = "theme_panda",
-            fontResId   = null  // Rusty will set once res/font/ file is added
+            fontResId   = R.font.fredoka_one
         ),
         Theme(
             id          = ThemeId.GLASS_ICE,

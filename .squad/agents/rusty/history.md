@@ -200,3 +200,14 @@ Done — UI auto-discovers via `ThemeRegistry.all`.
 
 ### Build Status
 ✓ `assembleDebug` — **BUILD SUCCESSFUL** (commits 070fdd6, bb0ec21, d40fa0b)
+
+## Learnings
+
+### 2026-05-09 — Fredoka One font for Rabbit & Panda themes
+
+- **Fredoka One beats Nunito for kid themes:** Chunkier, rounder letterforms read as "playful toy" at large display sizes. Nunito is more neutral/school-appropriate; Fredoka One is pure joy.
+- **Downloadable fonts require cert pinning:** `res/font/<name>.xml` with `app:fontProviderCerts="@array/com_google_android_gms_fonts_certs"` needs a corresponding `values/font_certs.xml` defining the Google production cert. This is a one-time project setup — all future downloadable fonts reuse the same cert array.
+- **Apply typeface after color in `applyThemeColors()`:** Both `tvDisplay` and `tvExpression` need typeface reset on every theme switch; otherwise a stale Fredoka One typeface stays on those views when switching away from Rabbit/Panda. `Typeface.DEFAULT` as the fallback handles this cleanly.
+- **`fontResId` field in Theme is extensible:** Any future theme wanting a custom font (e.g., a gothic dark theme) just sets `fontResId` in its ThemeRegistry entry — zero MainActivity changes needed.
+- **Check for pre-existing placeholder fields:** Basher had already added `fontResId: Int? = null` to the `Theme` data class with `null` placeholders in ThemeRegistry awaiting this work. Always read the full current state of files before assuming a field needs to be added.
+
