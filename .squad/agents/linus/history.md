@@ -12,6 +12,31 @@
 
 _Appended by Linus after each session._
 
+### 2026-05-12 — Feature Validation Skill + Cherry Blossom / Background Image Validation
+
+**Skill created:** `.squad/skills/feature-validation/SKILL.md`
+- Documents 6 core check areas (arithmetic, display, theme system, theme persistence, premium unlock, build health)
+- Per-change routing table maps change type to required checks
+- Standardised PASS/FAIL output format with inbox filing instruction
+
+**Validation pass — Cherry Blossom theme + backgroundImageRes support:**
+
+| Check | Result |
+|-------|--------|
+| `CHERRY_BLOSSOM` in `ThemeId` enum | ✅ |
+| Cherry Blossom entry in `ThemeRegistry.all` (8 themes total) | ✅ |
+| `ThemeColors` branch complete (all 9 fields) | ✅ |
+| All `cherry_*` color resources in `colors.xml` | ✅ |
+| `bg_cherry_blossom.xml` exists and is valid drawable | ✅ |
+| `backgroundImageRes` null-safety in `applyThemeColors()` | ✅ |
+| Classic theme remains free | ✅ |
+
+**Outcome:** ✅ PASS — Cherry Blossom and background image support are correctly implemented.
+
+**Pattern learned:** `backgroundImageRes` null-guard pattern (`if (theme.backgroundImageRes != null)`) must be checked on any theme using a background drawable. The guard is present in `MainActivity.kt` line 113.
+
+- **Orchestration log:** `.squad/orchestration-log/2026-05-12T15-23-24Z-linus.md` (Scribe record)
+
 ### 2026-05-08 — First test suite (calculator logic + theme unlock)
 
 **Patterns tested:**

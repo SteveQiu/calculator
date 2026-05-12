@@ -178,6 +178,232 @@ The Calculator app needs multiple premium themes locked behind ads or Google Pay
 4. Add `BillingRepositoryTest` and `AdRepositoryTest` after implementations
 5. Espresso suite after UI is stable
 
+### Decision: Team SOPs and Linus Done Gate
+
+**Author:** Danny (Lead)  
+**Date:** 2026-05-12  
+**Status:** Accepted
+
+#### Context
+
+The team had no shared, written process rules. Work was being declared "done" without a consistent definition, and feature validation (Linus) was treated as optional. This created risk of regressions shipping undetected and inconsistent quality across sessions.
+
+#### Decision
+
+Three documents were created or updated to establish hard process rules:
+
+**1. `.squad/sop.md` (new)**
+
+Full team playbook defining:
+- **Definition of Done** — 5 conditions, all must be true simultaneously
+- **Work Process** — 7-step sequence; step 4 (Linus validation) is a hard gate
+- **How to trigger Linus validation** — standard prompt template for coordinators
+- **Regression areas** — 7 core feature areas that must never break
+- **Agent responsibilities** — quick reference, noting Linus can NEVER be skipped
+
+**2. `.squad/ceremonies.md` (updated)**
+
+Added **Pre-Done Validation** ceremony:
+- Trigger: auto, after any feature work or bug fix being declared done
+- Facilitator: Linus
+- Participants: Linus + Livingston
+- Livingston verifies build; Linus runs checklist; FAIL blocks done status
+
+**3. `.squad/routing.md` (updated)**
+
+Added **Done Gate** section at bottom:
+- Mandatory routing of Livingston (build) and Linus (validation) before any task is declared complete
+- No exceptions clause enforced by coordinator
+
+#### Rationale
+
+- Linus is the only agent with a validation skill and checklist. No other agent substitutes.
+- Build verification without feature validation catches compile errors but not behavioral regressions.
+- Written SOPs eliminate per-session ambiguity about what "done" means.
+- Hard gates (not soft reminders) are the only reliable process enforcement mechanism.
+
+#### Consequences
+
+- Every code-producing session must route Livingston + Linus before calling done
+- Coordinators must include the Linus prompt template from sop.md Section 3
+- Validation failures produce a file in `.squad/decisions/inbox/linus-validation-fail-{slug}.md`
+- Agents who skip this gate are in violation of team SOP
+
+---
+
+### ADR: Background Image Architecture + Cherry Blossom Theme
+
+**Date:** 2026-05-11T23:14:40.125-07:00  
+**Author:** Danny (Lead)  
+**Status:** Accepted — Ready for Implementation
+
+#### Context
+
+The team asked to (a) make adding themes easier and (b) propose one new theme, preferring themes that change the background image. The current system applies a solid `colors.background` to `binding.root`. We need to extend `Theme` to optionally carry a drawable background while keeping backward compatibility with the seven existing solid-color themes.
+
+#### Decision 1 — New Theme: Cherry Blossom 🌸
+
+**Rationale:** Cherry Blossom is the most visually distinct addition to our current catalog. Every existing theme is a solid-color theme; Cherry Blossom is our first gradient/image theme. The pink-floral palette is completely absent from our lineup (Midnight = dark violet, Ocean = teal, Sunset = orange/coral, Rabbit/Panda = cute neutrals, Glass Ice = frosted). A sakura gradient is also the most universally appealing across demographics — it will convert well in the theme picker.
+
+| Property          | Value                                         |
+|-------------------|-----------------------------------------------|
+| ThemeId enum name | `CHERRY_BLOSSOM`                              |
+| displayName       | `"Cherry Blossom"`                            |
+| emoji / icon      | 🌸                                            |
+| isPremium         | `true`                                        |
+| skuId             | `"theme_cherry_blossom"`                      |
+| backgroundImageRes| `R.drawable.bg_cherry_blossom`                |
+| fontResId         | `null` (system default — clean, not cute)     |
+
+**Color Palette**
+
+| Role              | Color      | Hex       |
+|-------------------|------------|-----------|
+| background (fallback) | Blush white | `#FFF0F5` |
+| btnNumber         | Pale petal  | `#FFE4EE` |
+| btnSpecial        | Soft rose   | `#FADADD` |
+| btnOperator       | Deep rose   | `#C2185B` |
+| textPrimary       | Dark plum   | `#2D1B24` |
+| textSecondary     | Muted rose  | `#8B5067` |
+| textOnNumber      | Dark plum   | `#2D1B24` |
+| textOnSpecial     | Dark plum   | `#2D1B24` |
+| textOnOperator    | White       | `#FFFFFF` |
+
+**Background Drawable Concept**
+
+File: `app/src/main/res/drawable/bg_cherry_blossom.xml`
+
+A `<layer-list>` with two layers:
+1. A vertical `<shape>` gradient from `#FFB7C5` (sakura pink, top) to `#FFF0F5` (blush white, bottom)
+2. An optional subtle semi-transparent petal pattern overlay (can be a simple oval cluster shape at low alpha)
+
+This is a pure vector/XML drawable — no binary files, no APK bloat.
+
+```xml
+<!-- bg_cherry_blossom.xml skeleton for Rusty -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="#FFB7C5"
+                android:centerColor="#FFCDD9"
+                android:endColor="#FFF0F5" />
+        </shape>
+    </item>
+    <!-- Optional: petal accent shapes at corners -->
+</layer-list>
+```
+
+#### Decision 2 — Background Image Architecture
+
+**Q1: How is the background stored?**
+
+**Option A selected**: `@DrawableRes backgroundImageRes: Int? = null` on the `Theme` data class.
+
+Vector/XML drawables in `res/drawable/`. No binary PNG/JPG files in the repo. This is consistent with the existing `ic_theme_glass_ice.xml` icon approach and scales perfectly on all screen densities.
+
+**Change to `Theme.kt` — data class field**
+
+Add one nullable field to the `Theme` data class:
+
+```kotlin
+data class Theme(
+    val id: ThemeId,
+    val displayName: String,
+    val isPremium: Boolean,
+    val colors: (Context) -> ThemeColors,
+    val iconRes: Int? = null,
+    val iconEmoji: String? = null,
+    val skuId: String? = null,
+    val fontResId: Int? = null,
+    val backgroundImageRes: Int? = null   // null = use solid ThemeColors.background
+)
+```
+
+All existing `Theme(...)` entries in `ThemeRegistry.all` are unaffected — Kotlin default parameter = no migration.
+
+**Q2: How is it applied in MainActivity?**
+
+**Method:** `applyThemeColors()` in `MainActivity.kt`
+
+**Root view:** `binding.root` (the `LinearLayout` that is the root of `activity_main.xml` — no explicit ID, accessed via ViewBinding's generated `.root` property)
+
+**Current code (line 111):**
+```kotlin
+binding.root.setBackgroundColor(colors.background)
+```
+
+**Replace with:**
+```kotlin
+val bgDrawable = theme.backgroundImageRes?.let { ContextCompat.getDrawable(this, it) }
+if (bgDrawable != null) {
+    binding.root.background = bgDrawable
+} else {
+    binding.root.setBackgroundColor(colors.background)
+}
+```
+
+Import needed: `androidx.core.content.ContextCompat` (already imported).
+
+This change is surgical — one replaced statement. All other button/text coloring logic is untouched.
+
+**Q3: How does the background compose with ThemeColors?**
+
+- Solid-color themes (`backgroundImageRes == null`): `ThemeColors.background` applied as before. Zero regression.
+- Image-based themes (`backgroundImageRes != null`): The drawable replaces the solid color entirely. Button backgrounds (via `backgroundTintList`) and text colors from `ThemeColors` still overlay on top — the drawable is only the root view background.
+- For Cherry Blossom: the gradient provides the visual background; semi-transparent button tints (`#FFE4EE` at appropriate alpha) let the gradient subtly show through.
+
+**Q4: How easy is it to add a new theme after this change?**
+
+Adding a theme requires exactly 5 steps (Rusty does 1-4, Basher wires ViewModel if needed):
+
+1. **`ThemeId.kt`** — add enum entry: `MY_THEME("My Theme", true, "theme_my_theme")`
+2. **`colors.xml`** — add `my_theme_*` color resources (9 values: background, btn_number, btn_special, btn_operator, text_primary, text_secondary, text_on_number, text_on_special, text_on_operator)
+3. **`ThemeColors.kt`** — add `ThemeId.MY_THEME -> ThemeColors(...)` branch to `ThemeId.toColors()`
+4. *(Optional)* **`res/drawable/bg_my_theme.xml`** — gradient/vector drawable if using a background image
+5. **`Theme.kt`** — add `Theme(id=MY_THEME, displayName="My Theme", isPremium=true, colors={ it.toColors() }, iconEmoji="✨", skuId="theme_my_theme", backgroundImageRes=R.drawable.bg_my_theme)` to `ThemeRegistry.all`
+
+Typical time: ~15 minutes for a solid-color theme; ~30 minutes with a custom background drawable.
+
+**KDoc Comment for ThemeRegistry**
+
+Add this KDoc immediately before `object ThemeRegistry` in `Theme.kt`:
+
+```kotlin
+/**
+ * Registry of all available themes in the application.
+ *
+ * ## How to add a new theme
+ * 1. **ThemeId.kt** — add a new enum entry:
+ *    `MY_THEME("Display Name", isPremium = true, skuId = "theme_my_theme")`
+ * 2. **colors.xml** — add `my_theme_*` color resources for all nine roles:
+ *    `background`, `btn_number`, `btn_special`, `btn_operator`, `text_primary`,
+ *    `text_secondary`, `text_on_number`, `text_on_special`, `text_on_operator`.
+ * 3. **ThemeColors.kt** — add a `ThemeId.MY_THEME -> ThemeColors(...)` branch
+ *    to the `ThemeId.toColors()` function.
+ * 4. *(Optional)* **res/drawable/bg_my_theme.xml** — create a vector or gradient
+ *    drawable for a custom background image. Prefer `<layer-list>` or `<gradient>`
+ *    XML over binary PNG/JPG to keep the APK lean.
+ * 5. **Theme.kt** — add a `Theme(...)` entry to [ThemeRegistry.all] below, setting
+ *    `backgroundImageRes = R.drawable.bg_my_theme` if you created a drawable in step 4.
+ *
+ * For solid-color themes, omit `backgroundImageRes` (defaults to `null`; the solid
+ * color from `ThemeColors.background` is applied to the root view).
+ * For image-based themes, provide a vector drawable; it replaces the solid background
+ * while button and text colors from `ThemeColors` still apply on top.
+ */
+```
+
+#### Consequences
+
+- Every code-producing session must route Livingston + Linus before calling done
+- New themes can be added in 15–30 minutes depending on complexity
+- The change is fully backward-compatible; existing solid-color themes work unchanged
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

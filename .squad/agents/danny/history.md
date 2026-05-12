@@ -10,6 +10,14 @@
 
 ## Learnings
 
+### 2026-05-12 — Team SOPs and Linus Done Gate
+
+- Created `.squad/sop.md`: full team playbook with Definition of Done (5 conditions), 7-step Work Process, Linus validation prompt template, 7 regression areas, and agent responsibility table.
+- Linus validation is now a **hard gate** — documented in sop.md, ceremonies.md (Pre-Done Validation ceremony), and routing.md (Done Gate section). Coordinators must route Livingston + Linus before declaring any task done.
+- Key process rule: Linus can NEVER be skipped. No other agent substitutes for feature validation.
+- ADR written to `.squad/decisions/inbox/danny-sop-and-done-gate.md`.
+- **Orchestration log:** `.squad/orchestration-log/2026-05-12T15-23-24Z-danny.md` (Scribe record)
+
 ### 2026-05-08 — Theme System Architecture Scaffold
 
 - Defined 4 themes: Classic (free), Midnight, Ocean, Sunset (all premium).
