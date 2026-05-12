@@ -21,6 +21,18 @@
 - All skeleton files created; Rusty/Basher/Linus can implement independently without merge conflicts.
 - ADR written to `.squad/decisions/inbox/danny-theme-architecture.md`.
 
+### 2026-05-11 — Background Image Architecture + Cherry Blossom Theme
+
+- **New theme chosen:** Cherry Blossom 🌸 (`CHERRY_BLOSSOM`, `skuId="theme_cherry_blossom"`). First gradient/image theme in the catalog; pink-floral palette is absent from all 7 existing themes. Sakura gradient drawable (`bg_cherry_blossom.xml`) replaces solid background.
+- **Background image field:** Added `val backgroundImageRes: Int? = null` to `Theme` data class. Null = solid color (100% backward-compat). Non-null = vector/XML drawable replaces `binding.root` background.
+- **Application site:** `applyThemeColors()` in `MainActivity.kt`. Replaces `binding.root.setBackgroundColor(colors.background)` with a one-branch conditional: drawable if non-null, solid color otherwise. Uses `ContextCompat.getDrawable()` — already imported.
+- **Root view confirmed:** `binding.root` is the `LinearLayout` root of `activity_main.xml` (no explicit `android:id`; accessed via ViewBinding).
+- **Architecture: Option A (vector drawables only).** No binary PNG/JPG in repo. Consistent with `ic_theme_glass_ice.xml` precedent. Scales to all densities at zero APK cost.
+- **Developer guide:** KDoc added to `ThemeRegistry` documenting the 5-step process to add any new theme. Target time: ~15 min solid-color, ~30 min image-backed.
+- **Rusty owns:** ThemeId enum, colors.xml, ThemeColors.kt branch, drawable XML, Theme.kt registry entry + KDoc.
+- **Basher owns:** `Theme` data class field addition, `applyThemeColors()` conditional in MainActivity.
+- **ADR written:** `.squad/decisions/inbox/danny-theme-bg-architecture.md`
+
 ### 2026-05-09 — Cross-Team Integration Complete ✅
 
 - **Rusty's color system** landed perfectly: prefixed naming (`midnight_btn_operator`), theme overlays with `parent=""`, and backward-compat aliases. Usable in layouts as-is.

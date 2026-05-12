@@ -95,4 +95,15 @@ fun ThemeId.toColors(context: Context): ThemeColors = when (this) {
         textOnSpecial  = ContextCompat.getColor(context, R.color.glass_ice_text_on_special),
         textOnOperator = ContextCompat.getColor(context, R.color.glass_ice_text_on_operator)
     )
+    ThemeId.CHERRY_BLOSSOM -> ThemeColors(
+        background     = ContextCompat.getColor(context, R.color.cherry_background),
+        btnNumber      = ContextCompat.getColor(context, R.color.cherry_btn_number),
+        btnSpecial     = ContextCompat.getColor(context, R.color.cherry_btn_special),
+        btnOperator    = ContextCompat.getColor(context, R.color.cherry_btn_operator),
+        textPrimary    = ContextCompat.getColor(context, R.color.cherry_text_primary),
+        textSecondary  = ContextCompat.getColor(context, R.color.cherry_text_secondary),
+        textOnNumber   = ContextCompat.getColor(context, R.color.cherry_text_on_number),
+        textOnSpecial  = ContextCompat.getColor(context, R.color.cherry_text_on_special),
+        textOnOperator = ContextCompat.getColor(context, R.color.cherry_text_on_operator)
+    )
 }

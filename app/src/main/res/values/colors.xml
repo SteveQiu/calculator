@@ -109,6 +109,22 @@
     <color name="glass_ice_accent">#5BB8D4</color>
 
     <!-- ═══════════════════════════════════════════════════
+         CHERRY BLOSSOM THEME  (premium, sakura pink)
+         ═══════════════════════════════════════════════════ -->
+    <color name="cherry_background">#FFF0F5</color>
+    <color name="cherry_display_bg">#FFF0F5</color>
+    <color name="cherry_btn_number">#FFFFFF</color>
+    <color name="cherry_btn_special">#FFD6E4</color>
+    <color name="cherry_btn_operator">#E91E8C</color>
+    <color name="cherry_text_primary">#4A1530</color>
+    <color name="cherry_text_secondary">#C87090</color>
+    <color name="cherry_text_on_number">#4A1530</color>
+    <color name="cherry_text_on_special">#8B2252</color>
+    <color name="cherry_text_on_operator">#FFFFFF</color>
+    <color name="cherry_ghost">#00000000</color>
+    <color name="cherry_accent">#FFB7C5</color>
+
+    <!-- ═══════════════════════════════════════════════════
          BACKWARD-COMPAT ALIASES  → Classic colors
          (keeps existing layout/style references working)
          ═══════════════════════════════════════════════════ -->

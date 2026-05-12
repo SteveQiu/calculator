@@ -1,14 +1,21 @@
 package com.example.calculator.model
 
 import android.content.Context
+import androidx.annotation.DrawableRes
 import com.example.calculator.R
 
 /**
  * Self-describing theme definition. Every piece of theme metadata lives here.
- * To add a new theme: (1) add to ThemeId enum, (2) register in ThemeRegistry.all — nothing else.
  *
- * [colors] is a function so color resolution is deferred until a [Context] is available
- * (Android color resources require Context). Call as `theme.colors(context)`.
+ * To add a new theme:
+ *   1. Add enum constant to [ThemeId]
+ *   2. Add color resources to colors.xml (pattern: {theme_name}_{element})
+ *   3. Add [ThemeColors] branch to [ThemeId.toColors] in ThemeColors.kt
+ *   4. Optionally create a background drawable in res/drawable/ and pass its ID as [backgroundImageRes]
+ *   5. Optionally create a custom font XML and pass its ID as [fontResId]
+ *   6. Add a [Theme] entry to [ThemeRegistry.all] — done!
+ *
+ * [colors] is a function so color resolution is deferred until a [Context] is available.
  */
 data class Theme(
     val id: ThemeId,
@@ -20,7 +27,10 @@ data class Theme(
     val skuId: String? = null,
     /** Font resource ID for the calculator display and number buttons (e.g. R.font.fredoka_one).
      *  null = use the system default typeface. */
-    val fontResId: Int? = null
+    val fontResId: Int? = null,
+    /** Optional background image drawable resource ID. When set, replaces the solid background color
+     *  with this drawable (e.g. a gradient or pattern). null = use [ThemeColors.background] as solid color. */
+    @DrawableRes val backgroundImageRes: Int? = null
 )
 
 /**
@@ -89,6 +99,15 @@ object ThemeRegistry {
             iconRes     = R.drawable.ic_theme_glass_ice,
             iconEmoji   = "❄️",
             skuId       = "theme_glass_ice"
+        ),
+        Theme(
+            id                = ThemeId.CHERRY_BLOSSOM,
+            displayName       = "Cherry Blossom",
+            isPremium         = true,
+            colors            = { ctx -> ThemeId.CHERRY_BLOSSOM.toColors(ctx) },
+            iconEmoji         = "🌸",
+            skuId             = "theme_cherry_blossom",
+            backgroundImageRes = R.drawable.bg_cherry_blossom
         )
     )
 

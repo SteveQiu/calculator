@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.calculator.databinding.ActivityMainBinding
@@ -108,7 +109,12 @@ class MainActivity : AppCompatActivity(), ThemeUnlockListener {
         val theme  = ThemeRegistry.forId(themeId)
         val colors = theme.colors(this)
 
-        binding.root.setBackgroundColor(colors.background)
+        // Apply background: image takes precedence over solid color
+        if (theme.backgroundImageRes != null) {
+            binding.root.background = ContextCompat.getDrawable(this, theme.backgroundImageRes)
+        } else {
+            binding.root.setBackgroundColor(colors.background)
+        }
         binding.tvDisplay.setTextColor(colors.textPrimary)
         binding.tvExpression.setTextColor(colors.textSecondary)
 
